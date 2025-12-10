@@ -1,0 +1,140 @@
+import { Link } from "react-router-dom";
+import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const services = [
+    { name: "Electrical", href: "/services/electrical" },
+    { name: "Plumbing", href: "/services/plumbing" },
+    { name: "AC Service", href: "/services/ac" },
+    { name: "Cleaning", href: "/services/cleaning" },
+    { name: "Carpentry", href: "/services/carpentry" },
+    { name: "Appliance Repair", href: "/services/appliance" },
+  ];
+
+  const company = [
+    { name: "About Us", href: "/about" },
+    { name: "Careers", href: "/careers" },
+    { name: "Partner with us", href: "/technician" },
+    { name: "Blog", href: "/blog" },
+    { name: "Press", href: "/press" },
+  ];
+
+  const support = [
+    { name: "Help Center", href: "/help" },
+    { name: "Safety", href: "/safety" },
+    { name: "Terms of Service", href: "/terms" },
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Refund Policy", href: "/refund" },
+  ];
+
+  return (
+    <footer className="bg-foreground text-background">
+      <div className="container py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+          {/* Brand Column */}
+          <div className="lg:col-span-2">
+            <Link to="/" className="flex items-center gap-2 mb-6">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-hero">
+                <span className="text-xl font-bold text-primary-foreground">H</span>
+              </div>
+              <span className="text-2xl font-bold">Helpr</span>
+            </Link>
+            <p className="text-background/70 mb-6 max-w-sm">
+              Your trusted partner for all home services. Book verified professionals for electrical, plumbing, cleaning, and more.
+            </p>
+            <div className="space-y-3">
+              <a href="tel:+919876543210" className="flex items-center gap-3 text-background/70 hover:text-background transition-colors">
+                <Phone className="h-5 w-5" />
+                <span>+91 98765 43210</span>
+              </a>
+              <a href="mailto:support@helpr.in" className="flex items-center gap-3 text-background/70 hover:text-background transition-colors">
+                <Mail className="h-5 w-5" />
+                <span>support@helpr.in</span>
+              </a>
+              <div className="flex items-start gap-3 text-background/70">
+                <MapPin className="h-5 w-5 mt-0.5" />
+                <span>123 Business Hub, Sector 15,<br />Bengaluru, Karnataka 560001</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Services Column */}
+          <div>
+            <h4 className="font-semibold text-lg mb-4">Services</h4>
+            <ul className="space-y-3">
+              {services.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-background/70 hover:text-background transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Column */}
+          <div>
+            <h4 className="font-semibold text-lg mb-4">Company</h4>
+            <ul className="space-y-3">
+              {company.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-background/70 hover:text-background transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support Column */}
+          <div>
+            <h4 className="font-semibold text-lg mb-4">Support</h4>
+            <ul className="space-y-3">
+              {support.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-background/70 hover:text-background transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-background/60 text-sm">
+            © {currentYear} Helpr. All rights reserved.
+          </p>
+          <div className="flex items-center gap-4">
+            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+              <Facebook className="h-5 w-5" />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+              <Twitter className="h-5 w-5" />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+              <Instagram className="h-5 w-5" />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+              <Linkedin className="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
