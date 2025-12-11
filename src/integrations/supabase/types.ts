@@ -14,16 +14,115 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      technician_profiles: {
+        Row: {
+          address: string
+          background_check_consent: boolean | null
+          bank_account_holder_name: string | null
+          bank_account_number: string | null
+          bank_ifsc_code: string | null
+          certifications: string[] | null
+          city: string
+          created_at: string
+          full_name: string
+          id: string
+          id_document_type: string | null
+          id_document_url: string | null
+          kyc_rejection_reason: string | null
+          kyc_status: Database["public"]["Enums"]["kyc_status"]
+          phone: string
+          pincode: string
+          skills: string[] | null
+          state: string
+          updated_at: string
+          user_id: string
+          years_of_experience: number | null
+        }
+        Insert: {
+          address: string
+          background_check_consent?: boolean | null
+          bank_account_holder_name?: string | null
+          bank_account_number?: string | null
+          bank_ifsc_code?: string | null
+          certifications?: string[] | null
+          city: string
+          created_at?: string
+          full_name: string
+          id?: string
+          id_document_type?: string | null
+          id_document_url?: string | null
+          kyc_rejection_reason?: string | null
+          kyc_status?: Database["public"]["Enums"]["kyc_status"]
+          phone: string
+          pincode: string
+          skills?: string[] | null
+          state: string
+          updated_at?: string
+          user_id: string
+          years_of_experience?: number | null
+        }
+        Update: {
+          address?: string
+          background_check_consent?: boolean | null
+          bank_account_holder_name?: string | null
+          bank_account_number?: string | null
+          bank_ifsc_code?: string | null
+          certifications?: string[] | null
+          city?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          id_document_type?: string | null
+          id_document_url?: string | null
+          kyc_rejection_reason?: string | null
+          kyc_status?: Database["public"]["Enums"]["kyc_status"]
+          phone?: string
+          pincode?: string
+          skills?: string[] | null
+          state?: string
+          updated_at?: string
+          user_id?: string
+          years_of_experience?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "customer" | "technician" | "admin"
+      kyc_status: "pending" | "submitted" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +249,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["customer", "technician", "admin"],
+      kyc_status: ["pending", "submitted", "approved", "rejected"],
+    },
   },
 } as const
