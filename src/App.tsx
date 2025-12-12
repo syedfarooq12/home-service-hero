@@ -13,6 +13,8 @@ import Login from "./pages/Login";
 import TechnicianLogin from "./pages/TechnicianLogin";
 import TechnicianKYC from "./pages/TechnicianKYC";
 import TechnicianKYCPending from "./pages/TechnicianKYCPending";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/technician/login" element={<TechnicianLogin />} />
           <Route path="/technician/kyc" element={<TechnicianKYC />} />
           <Route path="/technician/kyc-pending" element={<TechnicianKYCPending />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
