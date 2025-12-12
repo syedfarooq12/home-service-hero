@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -21,6 +22,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -34,7 +42,9 @@ import {
   Phone,
   MapPin,
   Calendar,
-  Briefcase
+  Briefcase,
+  Search,
+  X
 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -48,8 +58,55 @@ const AdminDashboard = () => {
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
+  
+  // Filter states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [locationFilter, setLocationFilter] = useState<string>("all");
+  
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Get unique locations from technicians
+  const uniqueLocations = useMemo(() => {
+    const locations = new Set<string>();
+    technicians.forEach((t) => {
+      if (t.city && t.state) {
+        locations.add(`${t.city}, ${t.state}`);
+      }
+    });
+    return Array.from(locations).sort();
+  }, [technicians]);
+
+  // Filter technicians based on search and filters
+  const filteredTechnicians = useMemo(() => {
+    return technicians.filter((technician) => {
+      // Search filter
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch = !searchQuery || 
+        technician.full_name.toLowerCase().includes(searchLower) ||
+        technician.phone.includes(searchQuery) ||
+        technician.city.toLowerCase().includes(searchLower) ||
+        technician.state.toLowerCase().includes(searchLower);
+
+      // Status filter
+      const matchesStatus = statusFilter === "all" || technician.kyc_status === statusFilter;
+
+      // Location filter
+      const technicianLocation = `${technician.city}, ${technician.state}`;
+      const matchesLocation = locationFilter === "all" || technicianLocation === locationFilter;
+
+      return matchesSearch && matchesStatus && matchesLocation;
+    });
+  }, [technicians, searchQuery, statusFilter, locationFilter]);
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setStatusFilter("all");
+    setLocationFilter("all");
+  };
+
+  const hasActiveFilters = searchQuery || statusFilter !== "all" || locationFilter !== "all";
 
   useEffect(() => {
     checkAdminAccess();
@@ -213,6 +270,65 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        {/* Filters Section */}
+        <div className="bg-card rounded-xl border border-border shadow-sm p-4 mb-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search Input */}
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by name, phone, or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            {/* Status Filter */}
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="submitted">Submitted</SelectItem>
+                <SelectItem value="approved">Approved</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Location Filter */}
+            <Select value={locationFilter} onValueChange={setLocationFilter}>
+              <SelectTrigger className="w-full md:w-[200px]">
+                <SelectValue placeholder="Filter by location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Locations</SelectItem>
+                {uniqueLocations.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Clear Filters */}
+            {hasActiveFilters && (
+              <Button variant="ghost" onClick={clearFilters} className="shrink-0">
+                <X className="w-4 h-4 mr-2" />
+                Clear
+              </Button>
+            )}
+          </div>
+
+          {/* Results count */}
+          <div className="mt-3 text-sm text-muted-foreground">
+            Showing {filteredTechnicians.length} of {technicians.length} technicians
+            {hasActiveFilters && " (filtered)"}
+          </div>
+        </div>
+
         <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
           <Table>
             <TableHeader>
@@ -234,15 +350,22 @@ const AdminDashboard = () => {
                     <p className="text-muted-foreground mt-2">Loading technicians...</p>
                   </TableCell>
                 </TableRow>
-              ) : technicians.length === 0 ? (
+              ) : filteredTechnicians.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center py-12">
                     <User className="w-12 h-12 mx-auto text-muted-foreground/50" />
-                    <p className="text-muted-foreground mt-2">No technician applications yet</p>
+                    <p className="text-muted-foreground mt-2">
+                      {hasActiveFilters ? "No technicians match your filters" : "No technician applications yet"}
+                    </p>
+                    {hasActiveFilters && (
+                      <Button variant="link" onClick={clearFilters} className="mt-2">
+                        Clear filters
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ) : (
-                technicians.map((technician) => (
+                filteredTechnicians.map((technician) => (
                   <TableRow key={technician.id}>
                     <TableCell className="font-medium">{technician.full_name}</TableCell>
                     <TableCell>{technician.phone}</TableCell>
