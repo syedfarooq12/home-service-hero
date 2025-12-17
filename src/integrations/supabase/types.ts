@@ -14,6 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          address: string
+          amount: number | null
+          city: string
+          created_at: string
+          customer_email: string | null
+          customer_name: string
+          customer_phone: string
+          description: string | null
+          estimated_arrival_time: string | null
+          id: string
+          notes: string | null
+          payment_status: string | null
+          pincode: string
+          scheduled_date: string
+          scheduled_time: string
+          service_category: string
+          service_name: string
+          state: string
+          status: string
+          technician_id: string | null
+          technician_location_lat: number | null
+          technician_location_lng: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          amount?: number | null
+          city: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name: string
+          customer_phone: string
+          description?: string | null
+          estimated_arrival_time?: string | null
+          id?: string
+          notes?: string | null
+          payment_status?: string | null
+          pincode: string
+          scheduled_date: string
+          scheduled_time: string
+          service_category: string
+          service_name: string
+          state: string
+          status?: string
+          technician_id?: string | null
+          technician_location_lat?: number | null
+          technician_location_lng?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          amount?: number | null
+          city?: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string
+          customer_phone?: string
+          description?: string | null
+          estimated_arrival_time?: string | null
+          id?: string
+          notes?: string | null
+          payment_status?: string | null
+          pincode?: string
+          scheduled_date?: string
+          scheduled_time?: string
+          service_category?: string
+          service_name?: string
+          state?: string
+          status?: string
+          technician_id?: string | null
+          technician_location_lat?: number | null
+          technician_location_lng?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_technician_id_fkey"
+            columns: ["technician_id"]
+            isOneToOne: false
+            referencedRelation: "technician_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       technician_profiles: {
         Row: {
           address: string
