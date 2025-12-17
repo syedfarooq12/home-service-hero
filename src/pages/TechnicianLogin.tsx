@@ -191,7 +191,7 @@ const TechnicianLogin = () => {
                 {isSignUp ? "Join as a Technician" : "Technician Login"}
               </h1>
               <p className="text-muted-foreground">
-                {isSignUp ? "Start earning with Helpr" : "Sign in to manage your jobs"}
+                {isSignUp ? "Start earning with HelpR" : "Sign in to manage your jobs"}
               </p>
             </div>
 

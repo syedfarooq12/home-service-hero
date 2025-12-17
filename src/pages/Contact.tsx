@@ -88,7 +88,7 @@ const Contact = () => {
     {
       icon: Building,
       title: "Partner With Us",
-      description: "Interested in becoming a Helpr technician? Join our network.",
+      description: "Interested in becoming a HelpR technician? Join our network.",
       action: "Apply Now",
       href: "/technician/login",
     },

@@ -506,7 +506,7 @@ const TechnicianKYC = () => {
               I consent to background verification
             </label>
             <p className="text-xs text-muted-foreground mt-1">
-              I authorize Helpr to conduct background checks including criminal record verification, 
+              I authorize HelpR to conduct background checks including criminal record verification, 
               address verification, and identity verification as part of the onboarding process.
             </p>
           </div>
