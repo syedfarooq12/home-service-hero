@@ -121,7 +121,7 @@ const Login = () => {
       if (error) throw error;
 
       toast({
-        title: "Welcome to Helpr!",
+        title: "Welcome to HelpR!",
         description: "You have successfully logged in.",
       });
       navigate("/");
@@ -232,7 +232,7 @@ const Login = () => {
                 {isSignUp ? "Create Account" : "Welcome Back"}
               </h1>
               <p className="text-muted-foreground">
-                {isSignUp ? "Sign up to book home services" : "Sign in to continue to Helpr"}
+                {isSignUp ? "Sign up to book home services" : "Sign in to continue to HelpR"}
               </p>
             </div>
 

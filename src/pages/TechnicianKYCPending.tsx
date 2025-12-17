@@ -137,8 +137,8 @@ const TechnicianKYCPending = () => {
 
           <p className="text-sm text-muted-foreground mt-6">
             Need help? Contact our support team at{" "}
-            <a href="mailto:support@helpr.com" className="text-accent hover:underline">
-              support@helpr.com
+            <a href="mailto:support@helpR.com" className="text-accent hover:underline">
+              support@helpR.com
             </a>
           </p>
         </div>

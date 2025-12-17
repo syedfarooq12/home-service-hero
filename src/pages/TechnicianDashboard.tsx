@@ -91,7 +91,7 @@ const TechnicianDashboard = () => {
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-hero">
                 <span className="text-lg font-bold text-primary-foreground">H</span>
               </div>
-              <span className="text-xl font-bold text-foreground">Helpr</span>
+              <span className="text-xl font-bold text-foreground">HelpR</span>
             </Link>
             <span className="text-muted-foreground">|</span>
             <span className="text-sm font-medium text-muted-foreground">Technician Portal</span>

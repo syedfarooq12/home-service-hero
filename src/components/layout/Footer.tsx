@@ -39,7 +39,7 @@ const Footer = () => {
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-hero">
                 <span className="text-xl font-bold text-primary-foreground">H</span>
               </div>
-              <span className="text-2xl font-bold">Helpr</span>
+              <span className="text-2xl font-bold">HelpR</span>
             </Link>
             <p className="text-background/70 mb-6 max-w-sm">
               Your trusted partner for all home services. Book verified professionals for electrical, plumbing, cleaning, and more.

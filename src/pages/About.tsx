@@ -60,7 +60,7 @@ const About = () => {
               <span className="text-gradient">Simple & Reliable</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Helpr was founded with a simple mission: to provide fast, reliable, and affordable home services to every household in India.
+              HelpR was founded with a simple mission: to provide fast, reliable, and affordable home services to every household in India.
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                We believe everyone deserves access to quality home services without the hassle. Whether it's a leaky faucet at midnight or a full home deep clean, Helpr connects you with skilled professionals in minutes.
+                We believe everyone deserves access to quality home services without the hassle. Whether it's a leaky faucet at midnight or a full home deep clean, HelpR connects you with skilled professionals in minutes.
               </p>
               <ul className="space-y-4">
                 {[
@@ -137,7 +137,7 @@ const About = () => {
               Our Values
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              These core principles guide everything we do at Helpr.
+              These core principles guide everything we do at HelpR.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -165,7 +165,7 @@ const About = () => {
               Meet Our Leadership
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The passionate team behind Helpr's mission to transform home services.
+              The passionate team behind HelpR's mission to transform home services.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -192,10 +192,10 @@ const About = () => {
       <section className="py-20 bg-gradient-hero">
         <div className="container text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-            Ready to Experience the Helpr Difference?
+            Ready to Experience the HelpR Difference?
           </h2>
           <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Join thousands of happy customers who trust Helpr for all their home service needs.
+            Join thousands of happy customers who trust HelpR for all their home service needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/services">

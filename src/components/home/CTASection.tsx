@@ -17,7 +17,7 @@ const CTASection = () => {
             Ready to experience hassle-free home services?
           </h2>
           <p className="text-lg text-primary-foreground/80 mb-8">
-            Join 50,000+ customers who trust Helpr. Book your first service today 
+            Join 50,000+ customers who trust HelpR. Book your first service today 
             and get ₹100 off on your order!
           </p>
           
