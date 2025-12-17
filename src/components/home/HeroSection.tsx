@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Star, Clock, Shield } from "lucide-react";
+import { Search, MapPin, Star, Clock, Shield, MessageCircle } from "lucide-react";
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,6 +76,20 @@ const HeroSection = () => {
                 Search
               </Button>
             </form>
+
+            {/* WhatsApp Contact Button */}
+            <a
+              href="https://wa.me/919876543210?text=Hi%2C%20I%20need%20help%20with%20a%20home%20service"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-slow group"
+            >
+              <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
+              <div className="text-left">
+                <p className="text-sm opacity-90">Need instant help?</p>
+                <p className="text-base">Chat on WhatsApp</p>
+              </div>
+            </a>
 
             {/* Stats */}
             <div className="flex flex-wrap gap-8 pt-4">

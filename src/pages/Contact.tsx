@@ -76,20 +76,26 @@ const Contact = () => {
       title: "Live Chat",
       description: "Chat with our support team in real-time for quick assistance.",
       action: "Start Chat",
+      href: "#",
     },
     {
       icon: Headphones,
       title: "Call Us",
       description: "Speak directly with our customer support executives.",
       action: "Call Now",
+      href: "tel:+919876543210",
     },
     {
       icon: Building,
       title: "Partner With Us",
       description: "Interested in becoming a Helpr technician? Join our network.",
       action: "Apply Now",
+      href: "/technician/login",
     },
   ];
+
+  const whatsappNumber = "919876543210";
+  const whatsappMessage = encodeURIComponent("Hi, I need help with a home service");
 
   return (
     <div className="min-h-screen bg-background">
@@ -228,6 +234,18 @@ const Contact = () => {
         </div>
       </section>
 
+      {/* WhatsApp Floating Button */}
+      <a
+        href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold shadow-2xl hover:shadow-xl hover:scale-105 transition-all duration-300 group animate-bounce"
+        style={{ animationDuration: "2s" }}
+      >
+        <MessageCircle className="h-7 w-7" />
+        <span className="hidden sm:inline">Chat on WhatsApp</span>
+      </a>
+
       {/* Support Options */}
       <section className="py-20 bg-muted/30">
         <div className="container">
@@ -239,11 +257,33 @@ const Contact = () => {
               Choose the option that works best for you.
             </p>
           </div>
+
+          {/* Highlighted WhatsApp Card */}
+          <div className="mb-8">
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block bg-[#25D366] rounded-2xl p-8 text-center hover:bg-[#20BD5A] transition-all duration-300 shadow-lg hover:shadow-xl group"
+            >
+              <div className="h-20 w-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <MessageCircle className="h-10 w-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Chat on WhatsApp</h3>
+              <p className="text-white/90 mb-4">Get instant support - We typically reply within minutes!</p>
+              <span className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#25D366] font-semibold rounded-full">
+                <MessageCircle className="h-5 w-5" />
+                Start WhatsApp Chat
+              </span>
+            </a>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-6">
             {supportOptions.map((option, index) => (
-              <div
+              <a
                 key={index}
-                className="bg-card rounded-2xl p-8 border border-border/50 text-center hover:shadow-card transition-all duration-300"
+                href={option.href}
+                className="bg-card rounded-2xl p-8 border border-border/50 text-center hover:shadow-card transition-all duration-300 block"
               >
                 <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <option.icon className="h-8 w-8 text-primary" />
@@ -253,7 +293,7 @@ const Contact = () => {
                 <Button variant="outline" className="w-full">
                   {option.action}
                 </Button>
-              </div>
+              </a>
             ))}
           </div>
         </div>
