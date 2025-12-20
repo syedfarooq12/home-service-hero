@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ServiceManagement } from "@/components/admin/ServiceManagement";
 import { 
   CheckCircle, 
   XCircle, 
@@ -44,7 +46,9 @@ import {
   Calendar,
   Briefcase,
   Search,
-  X
+  X,
+  Users,
+  Package,
 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -256,80 +260,104 @@ const AdminDashboard = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
-            <p className="text-muted-foreground mt-1">Manage technician KYC applications</p>
+            <p className="text-muted-foreground mt-1">Manage services and technicians</p>
           </div>
-          <div className="flex gap-3">
-            <Button variant="outline" onClick={fetchTechnicians} disabled={loading}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-              Refresh
-            </Button>
-            <Button variant="destructive" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
-          </div>
+          <Button variant="destructive" onClick={handleLogout}>
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
         </div>
 
-        {/* Filters Section */}
-        <div className="bg-card rounded-xl border border-border shadow-sm p-4 mb-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Search Input */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by name, phone, or location..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+        <Tabs defaultValue="services" className="space-y-6">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="services" className="flex items-center gap-2">
+              <Package className="w-4 h-4" />
+              Services
+            </TabsTrigger>
+            <TabsTrigger value="technicians" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Technicians
+            </TabsTrigger>
+          </TabsList>
 
-            {/* Status Filter */}
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="submitted">Submitted</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
+          <TabsContent value="services">
+            <ServiceManagement />
+          </TabsContent>
 
-            {/* Location Filter */}
-            <Select value={locationFilter} onValueChange={setLocationFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="Filter by location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Locations</SelectItem>
-                {uniqueLocations.map((location) => (
-                  <SelectItem key={location} value={location}>
-                    {location}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <TabsContent value="technicians">
+            {/* Technicians Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Technicians</h2>
+                  <p className="text-sm text-muted-foreground">Manage technician KYC applications</p>
+                </div>
+                <Button variant="outline" onClick={fetchTechnicians} disabled={loading}>
+                  <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
+                  Refresh
+                </Button>
+              </div>
 
-            {/* Clear Filters */}
-            {hasActiveFilters && (
-              <Button variant="ghost" onClick={clearFilters} className="shrink-0">
-                <X className="w-4 h-4 mr-2" />
-                Clear
-              </Button>
-            )}
-          </div>
+              {/* Filters Section */}
+              <div className="bg-card rounded-xl border border-border shadow-sm p-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  {/* Search Input */}
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search by name, phone, or location..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
 
-          {/* Results count */}
-          <div className="mt-3 text-sm text-muted-foreground">
-            Showing {filteredTechnicians.length} of {technicians.length} technicians
-            {hasActiveFilters && " (filtered)"}
-          </div>
-        </div>
+                  {/* Status Filter */}
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full md:w-[180px]">
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="submitted">Submitted</SelectItem>
+                      <SelectItem value="approved">Approved</SelectItem>
+                      <SelectItem value="rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+                  {/* Location Filter */}
+                  <Select value={locationFilter} onValueChange={setLocationFilter}>
+                    <SelectTrigger className="w-full md:w-[200px]">
+                      <SelectValue placeholder="Filter by location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Locations</SelectItem>
+                      {uniqueLocations.map((location) => (
+                        <SelectItem key={location} value={location}>
+                          {location}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {/* Clear Filters */}
+                  {hasActiveFilters && (
+                    <Button variant="ghost" onClick={clearFilters} className="shrink-0">
+                      <X className="w-4 h-4 mr-2" />
+                      Clear
+                    </Button>
+                  )}
+                </div>
+
+                {/* Results count */}
+                <div className="mt-3 text-sm text-muted-foreground">
+                  Showing {filteredTechnicians.length} of {technicians.length} technicians
+                  {hasActiveFilters && " (filtered)"}
+                </div>
+              </div>
+
+              <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
@@ -415,192 +443,195 @@ const AdminDashboard = () => {
           </Table>
         </div>
 
-        {/* View Details Dialog */}
-        <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                Technician Details
-              </DialogTitle>
-              <DialogDescription>
-                Review the technician's KYC application
-              </DialogDescription>
-            </DialogHeader>
+              {/* View Details Dialog */}
+              <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <User className="w-5 h-5" />
+                      Technician Details
+                    </DialogTitle>
+                    <DialogDescription>
+                      Review the technician's KYC application
+                    </DialogDescription>
+                  </DialogHeader>
 
-            {selectedTechnician && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">{selectedTechnician.full_name}</h3>
-                  {getStatusBadge(selectedTechnician.kyc_status)}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Phone className="w-4 h-4" />
-                      Phone
-                    </div>
-                    <p className="font-medium">{selectedTechnician.phone}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Briefcase className="w-4 h-4" />
-                      Experience
-                    </div>
-                    <p className="font-medium">{selectedTechnician.years_of_experience || 0} years</p>
-                  </div>
-
-                  <div className="space-y-1 col-span-2">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="w-4 h-4" />
-                      Address
-                    </div>
-                    <p className="font-medium">
-                      {selectedTechnician.address}, {selectedTechnician.city}, {selectedTechnician.state} - {selectedTechnician.pincode}
-                    </p>
-                  </div>
-
-                  {selectedTechnician.skills && selectedTechnician.skills.length > 0 && (
-                    <div className="space-y-1 col-span-2">
-                      <p className="text-sm text-muted-foreground">Skills</p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedTechnician.skills.map((skill, index) => (
-                          <Badge key={index} variant="secondary">{skill}</Badge>
-                        ))}
+                  {selectedTechnician && (
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-semibold">{selectedTechnician.full_name}</h3>
+                        {getStatusBadge(selectedTechnician.kyc_status)}
                       </div>
-                    </div>
-                  )}
 
-                  {selectedTechnician.certifications && selectedTechnician.certifications.length > 0 && (
-                    <div className="space-y-1 col-span-2">
-                      <p className="text-sm text-muted-foreground">Certifications</p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedTechnician.certifications.map((cert, index) => (
-                          <Badge key={index} variant="outline">{cert}</Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedTechnician.id_document_url && (
-                    <div className="space-y-1 col-span-2">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <FileText className="w-4 h-4" />
-                        ID Document ({selectedTechnician.id_document_type})
-                      </div>
-                      <a
-                        href={selectedTechnician.id_document_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline text-sm"
-                      >
-                        View Document
-                      </a>
-                    </div>
-                  )}
-
-                  {selectedTechnician.bank_account_number && (
-                    <div className="space-y-1 col-span-2 p-3 bg-muted/50 rounded-lg">
-                      <p className="text-sm font-medium text-muted-foreground mb-2">Bank Details</p>
-                      <div className="grid grid-cols-3 gap-4 text-sm">
-                        <div>
-                          <p className="text-muted-foreground">Account Holder</p>
-                          <p className="font-medium">{selectedTechnician.bank_account_holder_name}</p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Phone className="w-4 h-4" />
+                            Phone
+                          </div>
+                          <p className="font-medium">{selectedTechnician.phone}</p>
                         </div>
-                        <div>
-                          <p className="text-muted-foreground">Account Number</p>
-                          <p className="font-medium">{selectedTechnician.bank_account_number}</p>
+
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Briefcase className="w-4 h-4" />
+                            Experience
+                          </div>
+                          <p className="font-medium">{selectedTechnician.years_of_experience || 0} years</p>
                         </div>
-                        <div>
-                          <p className="text-muted-foreground">IFSC Code</p>
-                          <p className="font-medium">{selectedTechnician.bank_ifsc_code}</p>
+
+                        <div className="space-y-1 col-span-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <MapPin className="w-4 h-4" />
+                            Address
+                          </div>
+                          <p className="font-medium">
+                            {selectedTechnician.address}, {selectedTechnician.city}, {selectedTechnician.state} - {selectedTechnician.pincode}
+                          </p>
                         </div>
+
+                        {selectedTechnician.skills && selectedTechnician.skills.length > 0 && (
+                          <div className="space-y-1 col-span-2">
+                            <p className="text-sm text-muted-foreground">Skills</p>
+                            <div className="flex flex-wrap gap-2">
+                              {selectedTechnician.skills.map((skill, index) => (
+                                <Badge key={index} variant="secondary">{skill}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {selectedTechnician.certifications && selectedTechnician.certifications.length > 0 && (
+                          <div className="space-y-1 col-span-2">
+                            <p className="text-sm text-muted-foreground">Certifications</p>
+                            <div className="flex flex-wrap gap-2">
+                              {selectedTechnician.certifications.map((cert, index) => (
+                                <Badge key={index} variant="outline">{cert}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {selectedTechnician.id_document_url && (
+                          <div className="space-y-1 col-span-2">
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <FileText className="w-4 h-4" />
+                              ID Document ({selectedTechnician.id_document_type})
+                            </div>
+                            <a
+                              href={selectedTechnician.id_document_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline text-sm"
+                            >
+                              View Document
+                            </a>
+                          </div>
+                        )}
+
+                        {selectedTechnician.bank_account_number && (
+                          <div className="space-y-1 col-span-2 p-3 bg-muted/50 rounded-lg">
+                            <p className="text-sm font-medium text-muted-foreground mb-2">Bank Details</p>
+                            <div className="grid grid-cols-3 gap-4 text-sm">
+                              <div>
+                                <p className="text-muted-foreground">Account Holder</p>
+                                <p className="font-medium">{selectedTechnician.bank_account_holder_name}</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground">Account Number</p>
+                                <p className="font-medium">{selectedTechnician.bank_account_number}</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground">IFSC Code</p>
+                                <p className="font-medium">{selectedTechnician.bank_ifsc_code}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Calendar className="w-4 h-4" />
+                            Application Date
+                          </div>
+                          <p className="font-medium">
+                            {new Date(selectedTechnician.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+
+                        <div className="space-y-1">
+                          <p className="text-sm text-muted-foreground">Background Check Consent</p>
+                          <p className="font-medium">
+                            {selectedTechnician.background_check_consent ? "Yes" : "No"}
+                          </p>
+                        </div>
+
+                        {selectedTechnician.kyc_rejection_reason && (
+                          <div className="space-y-1 col-span-2 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-900">
+                            <p className="text-sm font-medium text-red-600 dark:text-red-400">Rejection Reason</p>
+                            <p className="text-sm">{selectedTechnician.kyc_rejection_reason}</p>
+                          </div>
+                        )}
                       </div>
+
+                      {selectedTechnician.kyc_status === "submitted" && (
+                        <DialogFooter className="gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => openRejectDialog(selectedTechnician)}
+                            disabled={actionLoading}
+                          >
+                            <XCircle className="w-4 h-4 mr-2" />
+                            Reject
+                          </Button>
+                          <Button
+                            onClick={() => handleApprove(selectedTechnician)}
+                            disabled={actionLoading}
+                          >
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Approve
+                          </Button>
+                        </DialogFooter>
+                      )}
                     </div>
                   )}
+                </DialogContent>
+              </Dialog>
 
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="w-4 h-4" />
-                      Application Date
-                    </div>
-                    <p className="font-medium">
-                      {new Date(selectedTechnician.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
+              {/* Reject Dialog */}
+              <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Reject Application</DialogTitle>
+                    <DialogDescription>
+                      Please provide a reason for rejecting {selectedTechnician?.full_name}'s application.
+                    </DialogDescription>
+                  </DialogHeader>
 
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Background Check Consent</p>
-                    <p className="font-medium">
-                      {selectedTechnician.background_check_consent ? "Yes" : "No"}
-                    </p>
-                  </div>
+                  <Textarea
+                    placeholder="Enter rejection reason..."
+                    value={rejectionReason}
+                    onChange={(e) => setRejectionReason(e.target.value)}
+                    rows={4}
+                  />
 
-                  {selectedTechnician.kyc_rejection_reason && (
-                    <div className="space-y-1 col-span-2 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-900">
-                      <p className="text-sm font-medium text-red-600 dark:text-red-400">Rejection Reason</p>
-                      <p className="text-sm">{selectedTechnician.kyc_rejection_reason}</p>
-                    </div>
-                  )}
-                </div>
-
-                {selectedTechnician.kyc_status === "submitted" && (
-                  <DialogFooter className="gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => openRejectDialog(selectedTechnician)}
-                      disabled={actionLoading}
-                    >
-                      <XCircle className="w-4 h-4 mr-2" />
-                      Reject
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setRejectDialogOpen(false)}>
+                      Cancel
                     </Button>
                     <Button
-                      onClick={() => handleApprove(selectedTechnician)}
-                      disabled={actionLoading}
+                      variant="destructive"
+                      onClick={handleReject}
+                      disabled={actionLoading || !rejectionReason.trim()}
                     >
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Approve
+                      {actionLoading ? "Rejecting..." : "Reject Application"}
                     </Button>
                   </DialogFooter>
-                )}
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
-
-        {/* Reject Dialog */}
-        <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Reject Application</DialogTitle>
-              <DialogDescription>
-                Please provide a reason for rejecting {selectedTechnician?.full_name}'s application.
-              </DialogDescription>
-            </DialogHeader>
-
-            <Textarea
-              placeholder="Enter rejection reason..."
-              value={rejectionReason}
-              onChange={(e) => setRejectionReason(e.target.value)}
-              rows={4}
-            />
-
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setRejectDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={handleReject}
-                disabled={actionLoading || !rejectionReason.trim()}
-              >
-                {actionLoading ? "Rejecting..." : "Reject Application"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
 
       <Footer />

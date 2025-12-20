@@ -103,6 +103,63 @@ export type Database = {
           },
         ]
       }
+      services: {
+        Row: {
+          available_locations: string[] | null
+          category: string
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          image_url: string | null
+          includes: string[] | null
+          is_active: boolean
+          is_hidden: boolean
+          name: string
+          original_price: number | null
+          price: number
+          rating: number | null
+          reviews_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          available_locations?: string[] | null
+          category: string
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          image_url?: string | null
+          includes?: string[] | null
+          is_active?: boolean
+          is_hidden?: boolean
+          name: string
+          original_price?: number | null
+          price: number
+          rating?: number | null
+          reviews_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          available_locations?: string[] | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          image_url?: string | null
+          includes?: string[] | null
+          is_active?: boolean
+          is_hidden?: boolean
+          name?: string
+          original_price?: number | null
+          price?: number
+          rating?: number | null
+          reviews_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       technician_profiles: {
         Row: {
           address: string

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,114 +14,66 @@ import {
   MapPin,
   Calendar,
   ChevronRight,
-  ArrowLeft
+  ArrowLeft,
+  Loader2
 } from "lucide-react";
 import { toast } from "sonner";
+import type { Tables } from "@/integrations/supabase/types";
 
-// Mock service data
-const serviceData: Record<string, {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  originalPrice: number;
-  rating: number;
-  reviews: number;
-  duration: string;
-  image: string;
-  description: string;
-  includes: string[];
-  addons: { id: string; name: string; price: number }[];
-}> = {
-  "ac-service": {
-    id: "ac-service",
-    name: "AC Service & Repair",
-    category: "AC Service",
-    price: 499,
-    originalPrice: 799,
-    rating: 4.8,
-    reviews: 2340,
-    duration: "60-90 min",
-    image: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?q=80&w=800&auto=format&fit=crop",
-    description: "Complete AC service including deep cleaning, gas pressure check, and performance optimization. Our technicians are trained to handle all AC brands and models.",
-    includes: [
-      "Filter cleaning",
-      "Coil cleaning (indoor & outdoor)",
-      "Gas pressure check",
-      "Drainage cleaning",
-      "Performance test",
-      "30-day service warranty"
-    ],
-    addons: [
-      { id: "gas-refill", name: "Gas Refill (if needed)", price: 1500 },
-      { id: "deep-clean", name: "Deep Chemical Wash", price: 799 },
-      { id: "stabilizer", name: "Stabilizer Installation", price: 399 },
-    ]
-  },
-  "deep-cleaning": {
-    id: "deep-cleaning",
-    name: "Full Home Deep Cleaning",
-    category: "Cleaning",
-    price: 1999,
-    originalPrice: 2999,
-    rating: 4.9,
-    reviews: 1856,
-    duration: "4-6 hours",
-    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
-    description: "Comprehensive deep cleaning service for your entire home. We clean every corner, from kitchen to bathrooms, living spaces to bedrooms.",
-    includes: [
-      "Kitchen deep cleaning",
-      "Bathroom sanitization",
-      "Floor mopping & scrubbing",
-      "Dusting all surfaces",
-      "Window cleaning (inside)",
-      "Furniture cleaning"
-    ],
-    addons: [
-      { id: "balcony", name: "Balcony Cleaning", price: 299 },
-      { id: "sofa", name: "Sofa Deep Cleaning", price: 499 },
-      { id: "carpet", name: "Carpet Cleaning", price: 699 },
-    ]
-  }
-};
+type Service = Tables<"services">;
 
-// Default service for unknown IDs
+// Default service for unknown IDs or fallback
 const defaultService = {
   id: "default",
   name: "Service",
   category: "General",
   price: 299,
-  originalPrice: 499,
+  original_price: 499,
   rating: 4.5,
-  reviews: 100,
+  reviews_count: 100,
   duration: "30-60 min",
-  image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
+  image_url: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
   description: "Professional home service by verified technicians.",
   includes: ["Service visit", "Issue diagnosis", "Basic repair", "30-day warranty"],
-  addons: []
+  available_locations: [],
+  is_active: true,
+  is_hidden: false,
+  created_at: "",
+  updated_at: "",
 };
 
 const ServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const service = serviceData[id || ""] || defaultService;
-  
-  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const [service, setService] = useState<Service | typeof defaultService>(defaultService);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
 
-  const toggleAddon = (addonId: string) => {
-    setSelectedAddons(prev => 
-      prev.includes(addonId) 
-        ? prev.filter(id => id !== addonId)
-        : [...prev, addonId]
-    );
+  useEffect(() => {
+    if (id) {
+      fetchService(id);
+    }
+  }, [id]);
+
+  const fetchService = async (serviceId: string) => {
+    setLoading(true);
+    
+    const { data, error } = await supabase
+      .from("services")
+      .select("*")
+      .eq("id", serviceId)
+      .maybeSingle();
+
+    if (error || !data) {
+      // Fallback to default service
+      setService({ ...defaultService, name: "Service Not Found" });
+    } else {
+      setService(data);
+    }
+    setLoading(false);
   };
 
   const calculateTotal = () => {
-    const basePrice = service.price * quantity;
-    const addonsPrice = service.addons
-      .filter(addon => selectedAddons.includes(addon.id))
-      .reduce((sum, addon) => sum + addon.price, 0);
-    return basePrice + addonsPrice;
+    return Number(service.price) * quantity;
   };
 
   const handleBookNow = () => {
@@ -128,6 +81,18 @@ const ServiceDetail = () => {
       description: "Choose your preferred date and time."
     });
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex items-center justify-center py-32">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -156,7 +121,7 @@ const ServiceDetail = () => {
               {/* Hero Image */}
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <img
-                  src={service.image}
+                  src={service.image_url || "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop"}
                   alt={service.name}
                   className="h-full w-full object-cover"
                 />
@@ -165,12 +130,12 @@ const ServiceDetail = () => {
               {/* Service Info */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-medium text-primary">{service.category}</span>
+                  <span className="text-sm font-medium text-primary capitalize">{service.category}</span>
                   <span className="text-muted-foreground">•</span>
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                    <span className="text-sm font-medium">{service.rating}</span>
-                    <span className="text-sm text-muted-foreground">({service.reviews.toLocaleString()} reviews)</span>
+                    <span className="text-sm font-medium">{service.rating || 4.5}</span>
+                    <span className="text-sm text-muted-foreground">({(service.reviews_count || 100).toLocaleString()} reviews)</span>
                   </div>
                 </div>
                 <h1 className="text-3xl font-bold text-foreground mb-4">{service.name}</h1>
@@ -178,17 +143,19 @@ const ServiceDetail = () => {
               </div>
 
               {/* What's Included */}
-              <div className="bg-card rounded-2xl p-6 border border-border">
-                <h2 className="text-xl font-semibold text-foreground mb-4">What's Included</h2>
-                <ul className="grid md:grid-cols-2 gap-3">
-                  {service.includes.map((item, index) => (
-                    <li key={index} className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0" />
-                      <span className="text-foreground">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {service.includes && service.includes.length > 0 && (
+                <div className="bg-card rounded-2xl p-6 border border-border">
+                  <h2 className="text-xl font-semibold text-foreground mb-4">What's Included</h2>
+                  <ul className="grid md:grid-cols-2 gap-3">
+                    {service.includes.map((item, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0" />
+                        <span className="text-foreground">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Why Choose Us */}
               <div className="grid md:grid-cols-3 gap-4">
@@ -216,16 +183,20 @@ const ServiceDetail = () => {
                 {/* Price */}
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-3xl font-bold text-foreground">₹{service.price}</span>
-                  <span className="text-lg text-muted-foreground line-through">₹{service.originalPrice}</span>
-                  <span className="px-2 py-1 rounded-md bg-accent/10 text-accent text-sm font-semibold">
-                    {Math.round((1 - service.price / service.originalPrice) * 100)}% OFF
-                  </span>
+                  {service.original_price && Number(service.original_price) > Number(service.price) && (
+                    <>
+                      <span className="text-lg text-muted-foreground line-through">₹{service.original_price}</span>
+                      <span className="px-2 py-1 rounded-md bg-accent/10 text-accent text-sm font-semibold">
+                        {Math.round((1 - Number(service.price) / Number(service.original_price)) * 100)}% OFF
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 {/* Duration */}
                 <div className="flex items-center gap-2 text-muted-foreground mb-6">
                   <Clock className="h-5 w-5" />
-                  <span>Estimated duration: {service.duration}</span>
+                  <span>Estimated duration: {service.duration || "30-60 min"}</span>
                 </div>
 
                 {/* Quantity */}
@@ -247,45 +218,6 @@ const ServiceDetail = () => {
                     </button>
                   </div>
                 </div>
-
-                {/* Add-ons */}
-                {service.addons.length > 0 && (
-                  <div className="mb-6">
-                    <label className="text-sm font-medium text-foreground mb-3 block">Add-ons (Optional)</label>
-                    <div className="space-y-2">
-                      {service.addons.map((addon) => (
-                        <label
-                          key={addon.id}
-                          className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
-                            selectedAddons.includes(addon.id)
-                              ? "border-primary bg-primary/5"
-                              : "border-border hover:border-primary/50"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="checkbox"
-                              checked={selectedAddons.includes(addon.id)}
-                              onChange={() => toggleAddon(addon.id)}
-                              className="sr-only"
-                            />
-                            <div className={`h-5 w-5 rounded border flex items-center justify-center ${
-                              selectedAddons.includes(addon.id)
-                                ? "bg-primary border-primary"
-                                : "border-border"
-                            }`}>
-                              {selectedAddons.includes(addon.id) && (
-                                <CheckCircle2 className="h-3.5 w-3.5 text-primary-foreground" />
-                              )}
-                            </div>
-                            <span className="text-sm text-foreground">{addon.name}</span>
-                          </div>
-                          <span className="text-sm font-medium text-foreground">+₹{addon.price}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {/* Total */}
                 <div className="flex items-center justify-between py-4 border-t border-border mb-6">

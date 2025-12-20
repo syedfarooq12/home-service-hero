@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -16,8 +17,12 @@ import {
   Hammer, 
   Wrench,
   Paintbrush,
-  Bug
+  Bug,
+  Loader2
 } from "lucide-react";
+import type { Tables } from "@/integrations/supabase/types";
+
+type Service = Tables<"services">;
 
 const categories = [
   { id: "all", name: "All Services", icon: null },
@@ -31,158 +36,183 @@ const categories = [
   { id: "pest-control", name: "Pest Control", icon: Bug },
 ];
 
-const allServices = [
+// Fallback static services for when DB is empty
+const fallbackServices = [
   {
     id: "ac-service",
     name: "AC Service & Repair",
     category: "ac",
     price: 499,
-    originalPrice: 799,
+    original_price: 799,
     rating: 4.8,
-    reviews: 2340,
+    reviews_count: 2340,
     duration: "60-90 min",
-    image: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?q=80&w=400&auto=format&fit=crop",
     description: "Complete AC service including cleaning, gas refill check, and performance optimization.",
-  },
-  {
-    id: "ac-installation",
-    name: "AC Installation",
-    category: "ac",
-    price: 1499,
-    originalPrice: 1999,
-    rating: 4.7,
-    reviews: 890,
-    duration: "2-3 hours",
-    image: "https://images.unsplash.com/photo-1631545308282-34adfd52e1d6?q=80&w=400&auto=format&fit=crop",
-    description: "Professional AC installation with copper piping and proper mounting.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "deep-cleaning",
     name: "Full Home Deep Cleaning",
     category: "cleaning",
     price: 1999,
-    originalPrice: 2999,
+    original_price: 2999,
     rating: 4.9,
-    reviews: 1856,
+    reviews_count: 1856,
     duration: "4-6 hours",
-    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400&auto=format&fit=crop",
     description: "Thorough cleaning of every corner including kitchen, bathrooms, and living spaces.",
-  },
-  {
-    id: "bathroom-cleaning",
-    name: "Bathroom Deep Cleaning",
-    category: "cleaning",
-    price: 499,
-    originalPrice: 699,
-    rating: 4.8,
-    reviews: 1240,
-    duration: "1-2 hours",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=400&auto=format&fit=crop",
-    description: "Deep cleaning of bathroom tiles, fixtures, and sanitization.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "electrical-repair",
     name: "Electrical Repair Visit",
     category: "electrical",
     price: 299,
-    originalPrice: 449,
+    original_price: 449,
     rating: 4.7,
-    reviews: 3120,
+    reviews_count: 3120,
     duration: "30-60 min",
-    image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=400&auto=format&fit=crop",
     description: "Fix electrical issues including switches, sockets, and wiring problems.",
-  },
-  {
-    id: "fan-installation",
-    name: "Fan Installation",
-    category: "electrical",
-    price: 349,
-    originalPrice: 499,
-    rating: 4.6,
-    reviews: 980,
-    duration: "45-60 min",
-    image: "https://images.unsplash.com/photo-1635363638580-c2809d049eee?q=80&w=400&auto=format&fit=crop",
-    description: "Professional ceiling or wall fan installation with safety checks.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "plumbing-repair",
     name: "Plumbing Repair Visit",
     category: "plumbing",
     price: 349,
-    originalPrice: 499,
+    original_price: 499,
     rating: 4.6,
-    reviews: 1920,
+    reviews_count: 1920,
     duration: "30-60 min",
-    image: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?q=80&w=400&auto=format&fit=crop",
     description: "Fix leaks, blockages, and other plumbing issues.",
-  },
-  {
-    id: "tap-installation",
-    name: "Tap & Faucet Installation",
-    category: "plumbing",
-    price: 249,
-    originalPrice: 399,
-    rating: 4.5,
-    reviews: 760,
-    duration: "30-45 min",
-    image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=400&auto=format&fit=crop",
-    description: "Install new taps, faucets, or replace old ones.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "carpentry-work",
     name: "Carpentry Work",
     category: "carpentry",
     price: 449,
-    originalPrice: 599,
+    original_price: 599,
     rating: 4.7,
-    reviews: 540,
+    reviews_count: 540,
     duration: "1-2 hours",
-    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=400&auto=format&fit=crop",
     description: "Furniture repair, door fixing, and general woodwork.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "washing-machine",
     name: "Washing Machine Repair",
     category: "appliance",
     price: 399,
-    originalPrice: 599,
+    original_price: 599,
     rating: 4.6,
-    reviews: 1100,
+    reviews_count: 1100,
     duration: "45-90 min",
-    image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?q=80&w=400&auto=format&fit=crop",
     description: "Diagnose and repair washing machine issues.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "wall-painting",
     name: "Wall Painting",
     category: "painting",
     price: 18,
-    originalPrice: 25,
+    original_price: 25,
     rating: 4.8,
-    reviews: 670,
+    reviews_count: 670,
     duration: "Per sq.ft",
-    image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=400&auto=format&fit=crop",
     description: "Professional wall painting with premium paints.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
   {
     id: "pest-control-home",
     name: "General Pest Control",
     category: "pest-control",
     price: 999,
-    originalPrice: 1499,
+    original_price: 1499,
     rating: 4.7,
-    reviews: 890,
+    reviews_count: 890,
     duration: "1-2 hours",
-    image: "https://images.unsplash.com/photo-1632935190508-f5b7c3f5c2e6?q=80&w=400&auto=format&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1632935190508-f5b7c3f5c2e6?q=80&w=400&auto=format&fit=crop",
     description: "Complete pest control for cockroaches, ants, and common pests.",
+    is_active: true,
+    is_hidden: false,
+    includes: [],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
   },
 ];
 
 const Services = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+  const [services, setServices] = useState<(Service | typeof fallbackServices[0])[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredServices = allServices.filter((service) => {
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("services")
+      .select("*")
+      .eq("is_active", true)
+      .eq("is_hidden", false)
+      .order("created_at", { ascending: false });
+
+    if (error || !data || data.length === 0) {
+      // Use fallback services if DB is empty or error
+      setServices(fallbackServices);
+    } else {
+      setServices(data);
+    }
+    setLoading(false);
+  };
+
+  const filteredServices = services.filter((service) => {
     const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = activeCategory === "all" || service.category === activeCategory;
     return matchesSearch && matchesCategory;
@@ -240,59 +270,72 @@ const Services = () => {
             ))}
           </div>
 
+          {/* Loading State */}
+          {loading && (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          )}
+
           {/* Services Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredServices.map((service, index) => (
-              <Link
-                key={service.id}
-                to={`/service/${service.id}`}
-                className="group bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300 animate-slide-up"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.name}
-                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 right-3 px-2 py-1 rounded-lg bg-card/90 backdrop-blur-sm flex items-center gap-1">
-                    <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
-                    <span className="text-xs font-semibold">{service.rating}</span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {service.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                    {service.description}
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                    <Clock className="h-4 w-4" />
-                    <span>{service.duration}</span>
-                    <span className="text-border">•</span>
-                    <span>{service.reviews.toLocaleString()} reviews</span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-bold text-foreground">₹{service.price}</span>
-                      <span className="text-sm text-muted-foreground line-through">₹{service.originalPrice}</span>
-                    </div>
-                    <div className="px-2 py-1 rounded-md bg-accent/10 text-accent text-xs font-semibold">
-                      {Math.round((1 - service.price / service.originalPrice) * 100)}% OFF
+          {!loading && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredServices.map((service, index) => (
+                <Link
+                  key={service.id}
+                  to={`/service/${service.id}`}
+                  className="group bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300 animate-slide-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  {/* Image */}
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <img
+                      src={service.image_url || "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400&auto=format&fit=crop"}
+                      alt={service.name}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 right-3 px-2 py-1 rounded-lg bg-card/90 backdrop-blur-sm flex items-center gap-1">
+                      <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+                      <span className="text-xs font-semibold">{service.rating || 4.5}</span>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
 
-          {filteredServices.length === 0 && (
+                  {/* Content */}
+                  <div className="p-5">
+                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                      {service.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                      {service.description}
+                    </p>
+                    
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                      <Clock className="h-4 w-4" />
+                      <span>{service.duration || "30-60 min"}</span>
+                      <span className="text-border">•</span>
+                      <span>{(service.reviews_count || 100).toLocaleString()} reviews</span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-xl font-bold text-foreground">₹{service.price}</span>
+                        {service.original_price && Number(service.original_price) > Number(service.price) && (
+                          <span className="text-sm text-muted-foreground line-through">₹{service.original_price}</span>
+                        )}
+                      </div>
+                      {service.original_price && Number(service.original_price) > Number(service.price) && (
+                        <div className="px-2 py-1 rounded-md bg-accent/10 text-accent text-xs font-semibold">
+                          {Math.round((1 - Number(service.price) / Number(service.original_price)) * 100)}% OFF
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {!loading && filteredServices.length === 0 && (
             <div className="text-center py-16">
               <p className="text-muted-foreground">No services found matching your criteria.</p>
             </div>
