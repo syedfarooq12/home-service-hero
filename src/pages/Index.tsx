@@ -6,6 +6,8 @@ import HowItWorksSection from "@/components/home/HowItWorksSection";
 import FeaturedServicesSection from "@/components/home/FeaturedServicesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CTASection from "@/components/home/CTASection";
+import AITipsSection from "@/components/home/AITipsSection";
+import AIChatBox from "@/components/home/AIChatBox";
 
 const Index = () => {
   return (
@@ -16,10 +18,12 @@ const Index = () => {
         <CategoriesSection />
         <FeaturedServicesSection />
         <HowItWorksSection />
+        <AITipsSection />
         <TestimonialsSection />
         <CTASection />
       </main>
       <Footer />
+      <AIChatBox />
     </div>
   );
 };
