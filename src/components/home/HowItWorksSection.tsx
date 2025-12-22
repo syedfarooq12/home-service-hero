@@ -56,7 +56,7 @@ const HowItWorksSection = () => {
                   <div className="h-16 w-16 rounded-full bg-gradient-hero flex items-center justify-center mx-auto shadow-lg shadow-primary/25">
                     <step.icon className="h-7 w-7 text-primary-foreground" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-card border-4 border-background flex items-center justify-center text-sm font-bold text-foreground shadow-md">
+                  <div className="absolute top-1/2 -translate-y-1/2 -right-4 h-8 w-8 rounded-full bg-card border-4 border-background flex items-center justify-center text-sm font-bold text-foreground shadow-md z-10">
                     {step.id}
                   </div>
                 </div>
