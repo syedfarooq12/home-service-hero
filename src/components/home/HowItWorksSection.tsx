@@ -53,10 +53,19 @@ const HowItWorksSection = () => {
               >
                 {/* Step Number */}
                 <div className="relative mx-auto mb-6">
-                  <div className="h-16 w-16 rounded-full bg-gradient-hero flex items-center justify-center mx-auto shadow-lg shadow-primary/25">
+                  <div className="h-16 w-16 rounded-full bg-gradient-hero flex items-center justify-center mx-auto shadow-lg shadow-primary/25 transition-transform duration-300 hover:scale-110">
                     <step.icon className="h-7 w-7 text-primary-foreground" />
                   </div>
-                  <div className="absolute top-1/2 -translate-y-1/2 -right-4 h-8 w-8 rounded-full bg-card border-4 border-background flex items-center justify-center text-sm font-bold text-foreground shadow-md z-10">
+                  {/* Pulse ring animation */}
+                  <div 
+                    className="absolute top-1/2 -right-4 h-8 w-8 rounded-full bg-primary/20 animate-pulse-ring"
+                    style={{ animationDelay: `${index * 0.3}s` }}
+                  />
+                  {/* Step badge with bounce animation */}
+                  <div 
+                    className="absolute top-1/2 -right-4 h-8 w-8 rounded-full bg-card border-4 border-background flex items-center justify-center text-sm font-bold text-foreground shadow-md z-10 opacity-0 animate-bounce-in"
+                    style={{ animationDelay: `${0.3 + index * 0.15}s` }}
+                  >
                     {step.id}
                   </div>
                 </div>
