@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      ads: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string | null
+          id: string
+          image_url: string
+          is_active: boolean
+          link_url: string | null
+          position: string
+          start_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean
+          link_url?: string | null
+          position?: string
+          start_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          link_url?: string | null
+          position?: string
+          start_date?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           address: string
