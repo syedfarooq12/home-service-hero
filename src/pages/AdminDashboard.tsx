@@ -33,6 +33,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ServiceManagement } from "@/components/admin/ServiceManagement";
+import { AdsManagement } from "@/components/admin/AdsManagement";
 import { 
   CheckCircle, 
   XCircle, 
@@ -49,6 +50,7 @@ import {
   X,
   Users,
   Package,
+  Megaphone,
 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -269,7 +271,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="services" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full max-w-lg grid-cols-3">
             <TabsTrigger value="services" className="flex items-center gap-2">
               <Package className="w-4 h-4" />
               Services
@@ -278,10 +280,18 @@ const AdminDashboard = () => {
               <Users className="w-4 h-4" />
               Technicians
             </TabsTrigger>
+            <TabsTrigger value="ads" className="flex items-center gap-2">
+              <Megaphone className="w-4 h-4" />
+              Ads
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="services">
             <ServiceManagement />
+          </TabsContent>
+
+          <TabsContent value="ads">
+            <AdsManagement />
           </TabsContent>
 
           <TabsContent value="technicians">

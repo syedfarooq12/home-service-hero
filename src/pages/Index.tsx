@@ -8,6 +8,7 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CTASection from "@/components/home/CTASection";
 import AITipsSection from "@/components/home/AITipsSection";
 import AIChatBox from "@/components/home/AIChatBox";
+import { AdsBanner } from "@/components/home/AdsBanner";
 
 const Index = () => {
   return (
@@ -15,6 +16,9 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <section className="container mx-auto px-4 py-6">
+          <AdsBanner position="homepage" />
+        </section>
         <CategoriesSection />
         <FeaturedServicesSection />
         <HowItWorksSection />
