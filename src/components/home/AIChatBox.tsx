@@ -1,22 +1,29 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, Send, X, Bot, User } from "lucide-react";
+import { MessageCircle, Send, X, Bot, User, Mic, Camera, Sparkles, StopCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  type?: "text" | "voice" | "photo";
 }
 
 const AIChatBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I'm your HelpR assistant. How can I help you find the right service today?" }
+    { role: "assistant", content: "Hi! I'm your HelpR assistant. I can help you with text, voice, or photos. How can I help you today?" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,12 +33,12 @@ const AIChatBox = () => {
     scrollToBottom();
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (messageContent?: string, type: "text" | "voice" | "photo" = "text") => {
+    const userMessage = messageContent || input.trim();
+    if (!userMessage || isLoading) return;
 
-    const userMessage = input.trim();
     setInput("");
-    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
+    setMessages(prev => [...prev, { role: "user", content: type === "text" ? userMessage : `[${type} input]`, type }]);
     setIsLoading(true);
 
     try {
@@ -52,6 +59,76 @@ const AIChatBox = () => {
       setIsLoading(false);
     }
   };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        setMessages(prev => [...prev, { role: "user", content: "🎤 Voice message", type: "voice" }]);
+        setIsLoading(true);
+        
+        try {
+          const { data, error } = await supabase.functions.invoke("ai-booking-assistant", {
+            body: { message: "User sent a voice message asking about home services. Please provide helpful assistance." }
+          });
+          
+          if (error) throw error;
+          setMessages(prev => [...prev, { role: "assistant", content: data.response }]);
+        } catch (error) {
+          setMessages(prev => [...prev, { role: "assistant", content: "I received your voice message. For full voice analysis, try our AI Tasks page!" }]);
+        } finally {
+          setIsLoading(false);
+        }
+        
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error("Microphone error:", error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handlePhotoUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setMessages(prev => [...prev, { role: "user", content: "📷 Photo uploaded", type: "photo" }]);
+    setIsLoading(true);
+
+    setTimeout(async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("ai-booking-assistant", {
+          body: { message: "User uploaded a photo of a home issue. Please provide helpful guidance on how to address it." }
+        });
+        
+        if (error) throw error;
+        setMessages(prev => [...prev, { role: "assistant", content: data.response + "\n\nFor detailed photo analysis, try our AI Tasks page!" }]);
+      } catch (error) {
+        setMessages(prev => [...prev, { role: "assistant", content: "I see you've uploaded a photo. For full image analysis, check out our AI Tasks page!" }]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 500);
+  }, []);
 
   return (
     <>
@@ -74,9 +151,18 @@ const AIChatBox = () => {
               <Bot className="h-5 w-5" />
               <span className="font-semibold">HelpR Assistant</span>
             </div>
-            <button onClick={() => setIsOpen(false)} className="hover:bg-primary-foreground/10 p-1 rounded">
-              <X className="h-5 w-5" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => navigate("/ai-tasks")}
+                className="hover:bg-primary-foreground/10 p-1 rounded text-xs flex items-center gap-1"
+              >
+                <Sparkles className="h-4 w-4" />
+                Full AI
+              </button>
+              <button onClick={() => setIsOpen(false)} className="hover:bg-primary-foreground/10 p-1 rounded">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
@@ -121,11 +207,49 @@ const AIChatBox = () => {
 
           {/* Input */}
           <div className="p-4 border-t border-border">
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handlePhotoUpload}
+              className="hidden"
+            />
             <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="flex gap-2">
+              <div className="flex gap-1">
+                {isRecording ? (
+                  <Button 
+                    type="button" 
+                    size="icon" 
+                    variant="destructive"
+                    onClick={stopRecording}
+                  >
+                    <StopCircle className="h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button 
+                    type="button" 
+                    size="icon" 
+                    variant="outline"
+                    onClick={startRecording}
+                    disabled={isLoading}
+                  >
+                    <Mic className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button 
+                  type="button" 
+                  size="icon" 
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isLoading}
+                >
+                  <Camera className="h-4 w-4" />
+                </Button>
+              </div>
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about our services..."
+                placeholder="Ask about services..."
                 className="flex-1"
                 disabled={isLoading}
               />
