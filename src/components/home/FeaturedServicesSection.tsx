@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Star, Clock, ArrowRight } from "lucide-react";
+import { Star, Clock, ArrowRight, ShieldCheck } from "lucide-react";
 
 const featuredServices = [
   {
@@ -142,9 +142,15 @@ const FeaturedServicesSection = () => {
                     {service.badge}
                   </div>
                 )}
-                <div className="absolute top-3 right-3 px-2 py-1 rounded-lg bg-card/90 backdrop-blur-sm flex items-center gap-1">
-                  <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
-                  <span className="text-xs font-semibold">{service.rating}</span>
+                <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                  <div className="px-2 py-1 rounded-lg bg-emerald-500/90 backdrop-blur-sm flex items-center gap-1">
+                    <ShieldCheck className="h-3 w-3 text-white" />
+                    <span className="text-xs font-semibold text-white">Verified</span>
+                  </div>
+                  <div className="px-2 py-1 rounded-lg bg-card/90 backdrop-blur-sm flex items-center gap-1">
+                    <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+                    <span className="text-xs font-semibold">{service.rating}</span>
+                  </div>
                 </div>
               </div>
 

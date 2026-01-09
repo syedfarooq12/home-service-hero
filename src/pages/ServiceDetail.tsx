@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
+import { TrustBanner } from "@/components/common/VerifiedBadge";
 import { 
   Star, 
   Clock, 
@@ -15,7 +16,8 @@ import {
   Calendar,
   ChevronRight,
   ArrowLeft,
-  Loader2
+  Loader2,
+  ShieldCheck
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
@@ -157,12 +159,15 @@ const ServiceDetail = () => {
                 </div>
               )}
 
+              {/* Trust Banner */}
+              <TrustBanner />
+
               {/* Why Choose Us */}
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                  <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <ShieldCheck className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
                   <h3 className="font-semibold text-foreground mb-1">Verified Pros</h3>
-                  <p className="text-sm text-muted-foreground">Background-checked technicians</p>
+                  <p className="text-sm text-muted-foreground">ID verified & background-checked</p>
                 </div>
                 <div className="bg-secondary/50 rounded-xl p-4 text-center">
                   <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
