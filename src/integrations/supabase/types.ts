@@ -63,6 +63,8 @@ export type Database = {
           city: string
           created_at: string
           customer_email: string | null
+          customer_latitude: number | null
+          customer_longitude: number | null
           customer_name: string
           customer_phone: string
           description: string | null
@@ -89,6 +91,8 @@ export type Database = {
           city: string
           created_at?: string
           customer_email?: string | null
+          customer_latitude?: number | null
+          customer_longitude?: number | null
           customer_name: string
           customer_phone: string
           description?: string | null
@@ -115,6 +119,8 @@ export type Database = {
           city?: string
           created_at?: string
           customer_email?: string | null
+          customer_latitude?: number | null
+          customer_longitude?: number | null
           customer_name?: string
           customer_phone?: string
           description?: string | null
@@ -249,6 +255,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      technician_locations: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          eta_minutes: number | null
+          id: string
+          last_checkin_at: string
+          latitude: number
+          longitude: number
+          status: string
+          technician_id: string
+          updated_at: string
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          eta_minutes?: number | null
+          id?: string
+          last_checkin_at?: string
+          latitude: number
+          longitude: number
+          status?: string
+          technician_id: string
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          eta_minutes?: number | null
+          id?: string
+          last_checkin_at?: string
+          latitude?: number
+          longitude?: number
+          status?: string
+          technician_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "technician_locations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       technician_profiles: {
         Row: {

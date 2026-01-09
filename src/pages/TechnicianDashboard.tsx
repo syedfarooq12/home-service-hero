@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { TechnicianCheckin } from "@/components/tracking/TechnicianCheckin";
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -60,6 +61,7 @@ const TechnicianDashboard = () => {
   const [isAvailable, setIsAvailable] = useState(true);
   const [jobs, setJobs] = useState(mockJobs);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [selectedJobForTracking, setSelectedJobForTracking] = useState<string | null>(null);
 
   const handleAcceptJob = (jobId: string) => {
     setJobs(prev => prev.map(job => 
@@ -268,14 +270,32 @@ const TechnicianDashboard = () => {
                               <Phone className="h-4 w-4" />
                             </Button>
                           </a>
-                          <Button size="sm">
-                            <Navigation className="h-4 w-4 mr-1" />
-                            Navigate
+                          <Button 
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setSelectedJobForTracking(
+                              selectedJobForTracking === job.id ? null : job.id
+                            )}
+                          >
+                            <MapPin className="h-4 w-4 mr-1" />
+                            Update Location
                           </Button>
                         </div>
                       )}
                     </div>
                   </div>
+                  
+                  {/* Location Check-in Panel */}
+                  {selectedJobForTracking === job.id && job.status === "accepted" && (
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <TechnicianCheckin 
+                        bookingId={job.id} 
+                        onCheckin={() => {
+                          toast.success("Location updated!");
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
 
