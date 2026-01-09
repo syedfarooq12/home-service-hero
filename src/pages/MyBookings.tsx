@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { TechnicianTracker } from "@/components/tracking/TechnicianTracker";
 import {
   Calendar,
   Clock,
@@ -245,28 +246,9 @@ const MyBookings = () => {
                       </div>
                     )}
 
-                    {/* Live Tracking Info */}
-                    {booking.status === "on_the_way" && (
-                      <div className="bg-primary/10 rounded-xl p-4 border border-primary/20">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                            <Navigation className="h-5 w-5 text-primary animate-pulse" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-foreground">Technician is on the way!</p>
-                            {booking.estimated_arrival_time && (
-                              <p className="text-sm text-muted-foreground">
-                                ETA: {new Date(booking.estimated_arrival_time).toLocaleTimeString()}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        {booking.technician_location_lat && booking.technician_location_lng && (
-                          <p className="text-sm text-muted-foreground">
-                            Live location tracking active
-                          </p>
-                        )}
-                      </div>
+                    {/* Real-time Technician Tracking */}
+                    {["technician_assigned", "on_the_way", "arrived", "in_progress"].includes(booking.status) && (
+                      <TechnicianTracker bookingId={booking.id} />
                     )}
 
                     {/* Booking Details */}
