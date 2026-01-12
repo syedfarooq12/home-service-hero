@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { TrustBanner } from "@/components/common/VerifiedBadge";
+import { RazorpayButton, PricingBreakdown } from "@/components/payment/RazorpayButton";
 import { 
   Star, 
   Clock, 
@@ -17,7 +18,9 @@ import {
   ChevronRight,
   ArrowLeft,
   Loader2,
-  ShieldCheck
+  ShieldCheck,
+  CreditCard,
+  Lock
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
@@ -185,8 +188,8 @@ const ServiceDetail = () => {
             {/* Right Column - Booking Card */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 bg-card rounded-2xl p-6 border border-border shadow-lg">
-                {/* Price */}
-                <div className="flex items-baseline gap-3 mb-6">
+                {/* Price Header */}
+                <div className="flex items-baseline gap-3 mb-2">
                   <span className="text-3xl font-bold text-foreground">₹{service.price}</span>
                   {service.original_price && Number(service.original_price) > Number(service.price) && (
                     <>
@@ -197,6 +200,7 @@ const ServiceDetail = () => {
                     </>
                   )}
                 </div>
+                <p className="text-sm text-muted-foreground mb-4">per service</p>
 
                 {/* Duration */}
                 <div className="flex items-center gap-2 text-muted-foreground mb-6">
@@ -224,20 +228,46 @@ const ServiceDetail = () => {
                   </div>
                 </div>
 
-                {/* Total */}
-                <div className="flex items-center justify-between py-4 border-t border-border mb-6">
-                  <span className="text-lg font-medium text-foreground">Total</span>
-                  <span className="text-2xl font-bold text-foreground">₹{calculateTotal()}</span>
-                </div>
+                {/* Transparent Pricing Breakdown */}
+                <PricingBreakdown
+                  basePrice={Number(service.price)}
+                  quantity={quantity}
+                  originalPrice={service.original_price ? Number(service.original_price) : null}
+                  showGst={false}
+                />
 
                 {/* Book Now Button */}
-                <Button onClick={handleBookNow} variant="hero" size="xl" className="w-full mb-4">
-                  <Calendar className="h-5 w-5" />
-                  Book Now
-                </Button>
+                <div className="mt-6">
+                  <Button onClick={handleBookNow} variant="hero" size="xl" className="w-full mb-4">
+                    <Calendar className="h-5 w-5" />
+                    Book Now
+                  </Button>
+                </div>
+
+                {/* Payment Security Badges */}
+                <div className="bg-secondary/30 rounded-xl p-4 mt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Lock className="h-4 w-4 text-accent" />
+                    <span className="text-sm font-medium text-foreground">Secure Payments</span>
+                  </div>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <img 
+                      src="https://razorpay.com/favicon.png" 
+                      alt="Razorpay" 
+                      className="h-6 opacity-70"
+                    />
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <CreditCard className="h-4 w-4" />
+                      <span>Cards, UPI, Wallets</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Pay securely via Razorpay. 100% safe & encrypted.
+                  </p>
+                </div>
 
                 {/* Location Info */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center mt-4">
                   <MapPin className="h-4 w-4" />
                   <span>Service available in your area</span>
                 </div>
