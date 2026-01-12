@@ -317,10 +317,14 @@ export type Database = {
           id: string
           id_document_type: string | null
           id_document_url: string | null
+          is_available: boolean | null
           kyc_rejection_reason: string | null
           kyc_status: Database["public"]["Enums"]["kyc_status"]
+          latitude: number | null
+          longitude: number | null
           phone: string
           pincode: string
+          service_radius_km: number | null
           skills: string[] | null
           state: string
           updated_at: string
@@ -340,10 +344,14 @@ export type Database = {
           id?: string
           id_document_type?: string | null
           id_document_url?: string | null
+          is_available?: boolean | null
           kyc_rejection_reason?: string | null
           kyc_status?: Database["public"]["Enums"]["kyc_status"]
+          latitude?: number | null
+          longitude?: number | null
           phone: string
           pincode: string
+          service_radius_km?: number | null
           skills?: string[] | null
           state: string
           updated_at?: string
@@ -363,10 +371,14 @@ export type Database = {
           id?: string
           id_document_type?: string | null
           id_document_url?: string | null
+          is_available?: boolean | null
           kyc_rejection_reason?: string | null
           kyc_status?: Database["public"]["Enums"]["kyc_status"]
+          latitude?: number | null
+          longitude?: number | null
           phone?: string
           pincode?: string
+          service_radius_km?: number | null
           skills?: string[] | null
           state?: string
           updated_at?: string

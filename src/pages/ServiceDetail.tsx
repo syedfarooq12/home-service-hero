@@ -165,6 +165,21 @@ const ServiceDetail = () => {
               {/* Trust Banner */}
               <TrustBanner />
 
+              {/* Hyper-Local Matching Banner */}
+              <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-5 border border-primary/10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Hyper-Local Matching</h3>
+                    <p className="text-sm text-muted-foreground">
+                      We'll connect you with verified helpers within 5km of your location
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Why Choose Us */}
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-secondary/50 rounded-xl p-4 text-center">

@@ -9,6 +9,7 @@ import CTASection from "@/components/home/CTASection";
 import AITipsSection from "@/components/home/AITipsSection";
 import AIChatBox from "@/components/home/AIChatBox";
 import { AdsBanner } from "@/components/home/AdsBanner";
+import { HyperLocalBanner } from "@/components/matching/NearbyHelpers";
 
 const Index = () => {
   return (
@@ -20,6 +21,9 @@ const Index = () => {
           <AdsBanner position="homepage" />
         </section>
         <CategoriesSection />
+        <section className="container mx-auto px-4 py-8">
+          <HyperLocalBanner />
+        </section>
         <FeaturedServicesSection />
         <HowItWorksSection />
         <AITipsSection />
