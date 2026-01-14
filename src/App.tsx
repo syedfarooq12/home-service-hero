@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import MyBookings from "./pages/MyBookings";
 import AITasks from "./pages/AITasks";
 import NotFound from "./pages/NotFound";
+import SupportWidget from "./components/support/SupportWidget";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <SupportWidget />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
