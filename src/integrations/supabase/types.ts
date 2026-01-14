@@ -151,6 +151,35 @@ export type Database = {
           },
         ]
       }
+      favorite_technicians: {
+        Row: {
+          created_at: string
+          id: string
+          technician_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          technician_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          technician_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorite_technicians_technician_id_fkey"
+            columns: ["technician_id"]
+            isOneToOne: false
+            referencedRelation: "technician_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
           available_locations: string[] | null

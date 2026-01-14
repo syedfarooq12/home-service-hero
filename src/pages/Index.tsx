@@ -10,6 +10,7 @@ import AITipsSection from "@/components/home/AITipsSection";
 import AIChatBox from "@/components/home/AIChatBox";
 import { AdsBanner } from "@/components/home/AdsBanner";
 import { HyperLocalBanner } from "@/components/matching/NearbyHelpers";
+import { QuickRebookSection } from "@/components/rebooking/QuickRebook";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
         <section className="container mx-auto px-4 py-8">
           <HyperLocalBanner />
         </section>
+        <QuickRebookSection />
         <FeaturedServicesSection />
         <HowItWorksSection />
         <AITipsSection />
