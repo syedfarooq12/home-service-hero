@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Star, Clock, Shield, MessageCircle } from "lucide-react";
+import { Search, MapPin, Star, Clock, Shield, MessageCircle, IndianRupee } from "lucide-react";
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,6 +18,7 @@ const HeroSection = () => {
     { icon: Star, value: "4.8", label: "Average Rating" },
     { icon: Clock, value: "45 min", label: "Avg. Response" },
     { icon: Shield, value: "100%", label: "Verified Pros" },
+    { icon: IndianRupee, value: "Low", label: "Affordable Cost" },
   ];
 
   return (
