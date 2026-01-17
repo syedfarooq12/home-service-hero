@@ -5,3 +5,12 @@ verify_jwt = false
 
 [functions.ai-task-processor]
 verify_jwt = false
+
+[functions.ai-technician-matcher]
+verify_jwt = false
+
+[functions.create-razorpay-order]
+verify_jwt = false
+
+[functions.verify-razorpay-payment]
+verify_jwt = false
