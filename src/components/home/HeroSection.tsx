@@ -3,26 +3,32 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Star, Clock, Shield, MessageCircle, IndianRupee } from "lucide-react";
-
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("");
   const navigate = useNavigate();
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     navigate(`/services?q=${searchQuery}&location=${location}`);
   };
-
-  const stats = [
-    { icon: Star, value: "4.8", label: "Average Rating" },
-    { icon: Clock, value: "45 min", label: "Avg. Response" },
-    { icon: Shield, value: "100%", label: "Verified Pros" },
-    { icon: IndianRupee, value: "Low", label: "Affordable Cost" },
-  ];
-
-  return (
-    <section className="relative overflow-hidden bg-gradient-card pt-8 pb-20 md:pt-16 md:pb-32">
+  const stats = [{
+    icon: Star,
+    value: "4.8",
+    label: "Average Rating"
+  }, {
+    icon: Clock,
+    value: "45 min",
+    label: "Avg. Response"
+  }, {
+    icon: Shield,
+    value: "100%",
+    label: "Verified Pros"
+  }, {
+    icon: IndianRupee,
+    value: "Low",
+    label: "Affordable Cost"
+  }];
+  return <section className="relative overflow-hidden bg-gradient-card pt-8 pb-20 md:pt-16 md:pb-32">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
@@ -55,23 +61,11 @@ const HeroSection = () => {
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="What service do you need?"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-14 pl-12 pr-4 text-base rounded-xl border-border/50 bg-card shadow-md"
-                />
+                <Input type="text" placeholder="What service do you need?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="h-14 pl-12 pr-4 text-base rounded-xl border-border/50 bg-card shadow-md" />
               </div>
               <div className="relative sm:w-48">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Your location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="h-14 pl-12 pr-4 text-base rounded-xl border-border/50 bg-card shadow-md"
-                />
+                <Input type="text" placeholder="Your location" value={location} onChange={e => setLocation(e.target.value)} className="h-14 pl-12 pr-4 text-base rounded-xl border-border/50 bg-card shadow-md" />
               </div>
               <Button type="submit" variant="hero" size="xl">
                 Search
@@ -79,12 +73,7 @@ const HeroSection = () => {
             </form>
 
             {/* WhatsApp Contact Button */}
-            <a
-              href="https://wa.me/919876543210?text=Hi%2C%20I%20need%20help%20with%20a%20home%20service"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-slow group"
-            >
+            <a href="https://wa.me/919876543210?text=Hi%2C%20I%20need%20help%20with%20a%20home%20service" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-slow group">
               <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
               <div className="text-left">
                 <p className="text-sm opacity-90">Need instant help?</p>
@@ -94,8 +83,7 @@ const HeroSection = () => {
 
             {/* Stats */}
             <div className="flex flex-wrap gap-8 pt-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex items-center gap-3">
+              {stats.map(stat => <div key={stat.label} className="flex items-center justify-end gap-[70px]">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
                     <stat.icon className="h-6 w-6 text-primary" />
                   </div>
@@ -103,22 +91,19 @@ const HeroSection = () => {
                     <p className="text-xl font-bold text-foreground">{stat.value}</p>
                     <p className="text-sm text-muted-foreground">{stat.label}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
 
           {/* Right Content - Hero Image */}
-          <div className="relative hidden lg:block animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <div className="relative hidden lg:block animate-fade-in" style={{
+          animationDelay: "0.2s"
+        }}>
             <div className="relative">
               {/* Main Image Container */}
               <div className="aspect-square rounded-3xl bg-gradient-hero p-1 shadow-2xl shadow-primary/20">
                 <div className="h-full w-full rounded-[22px] bg-secondary flex items-center justify-center overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop"
-                    alt="Professional technician"
-                    className="h-full w-full object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop" alt="Professional technician" className="h-full w-full object-cover" />
                 </div>
               </div>
 
@@ -136,7 +121,9 @@ const HeroSection = () => {
               </div>
 
               {/* Floating Card 2 */}
-              <div className="absolute -right-8 bottom-1/4 bg-card rounded-2xl p-4 shadow-xl animate-float" style={{ animationDelay: "1s" }}>
+              <div className="absolute -right-8 bottom-1/4 bg-card rounded-2xl p-4 shadow-xl animate-float" style={{
+              animationDelay: "1s"
+            }}>
                 <div className="flex items-center gap-3">
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
                     <Star className="h-6 w-6 text-primary fill-primary" />
@@ -151,8 +138,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
