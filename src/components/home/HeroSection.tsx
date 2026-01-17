@@ -83,7 +83,7 @@ const HeroSection = () => {
 
             {/* Stats */}
             <div className="flex flex-wrap gap-8 pt-4">
-              {stats.map(stat => <div key={stat.label} className="flex items-center justify-end gap-[70px]">
+              {stats.map(stat => <div key={stat.label} className="mx-0 flex items-center justify-center gap-[86px] py-0">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
                     <stat.icon className="h-6 w-6 text-primary" />
                   </div>
