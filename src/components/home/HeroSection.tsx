@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Star, Clock, Shield, MessageCircle, IndianRupee } from "lucide-react";
+import { Search, MapPin, Star, Clock, Shield, MessageCircle, IndianRupee, Brain } from "lucide-react";
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("");
@@ -27,6 +27,10 @@ const HeroSection = () => {
     icon: IndianRupee,
     value: "Low",
     label: "Affordable Cost"
+  }, {
+    icon: Brain,
+    value: "AI",
+    label: "Smart Matching"
   }];
   return <section className="relative overflow-hidden bg-gradient-card pt-8 pb-20 md:pt-16 md:pb-32">
       {/* Background Elements */}
