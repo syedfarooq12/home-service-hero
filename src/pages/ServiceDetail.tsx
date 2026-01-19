@@ -27,10 +27,158 @@ import type { Tables } from "@/integrations/supabase/types";
 
 type Service = Tables<"services">;
 
-// Default service for unknown IDs or fallback
+// Fallback static services (matching Services.tsx)
+const fallbackServices = [
+  {
+    id: "ac-service",
+    name: "AC Service & Repair",
+    category: "ac",
+    price: 499,
+    original_price: 799,
+    rating: 4.8,
+    reviews_count: 2340,
+    duration: "60-90 min",
+    image_url: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?q=80&w=800&auto=format&fit=crop",
+    description: "Complete AC service including cleaning, gas refill check, and performance optimization. Our certified technicians ensure your AC runs efficiently all year round.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Deep cleaning of filters", "Gas pressure check", "Cooling efficiency test", "Compressor inspection", "30-day service warranty"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "deep-cleaning",
+    name: "Full Home Deep Cleaning",
+    category: "cleaning",
+    price: 1999,
+    original_price: 2999,
+    rating: 4.9,
+    reviews_count: 1856,
+    duration: "4-6 hours",
+    image_url: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
+    description: "Thorough cleaning of every corner including kitchen, bathrooms, and living spaces with eco-friendly products.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Kitchen deep clean", "Bathroom sanitization", "Floor mopping & scrubbing", "Dusting all surfaces", "Window cleaning"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "electrical-repair",
+    name: "Electrical Repair Visit",
+    category: "electrical",
+    price: 299,
+    original_price: 449,
+    rating: 4.7,
+    reviews_count: 3120,
+    duration: "30-60 min",
+    image_url: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop",
+    description: "Fix electrical issues including switches, sockets, and wiring problems by certified electricians.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Issue diagnosis", "Switch/socket repair", "Wiring inspection", "Safety check", "30-day warranty"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "plumbing-repair",
+    name: "Plumbing Repair Visit",
+    category: "plumbing",
+    price: 349,
+    original_price: 499,
+    rating: 4.6,
+    reviews_count: 1920,
+    duration: "30-60 min",
+    image_url: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?q=80&w=800&auto=format&fit=crop",
+    description: "Fix leaks, blockages, and other plumbing issues with professional tools and expertise.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Leak detection", "Pipe repair", "Drain cleaning", "Fixture repair", "30-day warranty"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "carpentry-work",
+    name: "Carpentry Work",
+    category: "carpentry",
+    price: 449,
+    original_price: 599,
+    rating: 4.7,
+    reviews_count: 540,
+    duration: "1-2 hours",
+    image_url: "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=800&auto=format&fit=crop",
+    description: "Furniture repair, door fixing, and general woodwork by skilled carpenters.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Furniture repair", "Door/window fixing", "Cabinet work", "Wood polishing", "Material estimation"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "washing-machine",
+    name: "Washing Machine Repair",
+    category: "appliance",
+    price: 399,
+    original_price: 599,
+    rating: 4.6,
+    reviews_count: 1100,
+    duration: "45-90 min",
+    image_url: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?q=80&w=800&auto=format&fit=crop",
+    description: "Diagnose and repair washing machine issues for all major brands.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Issue diagnosis", "Motor check", "Drum inspection", "Parts replacement", "90-day warranty"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "wall-painting",
+    name: "Wall Painting",
+    category: "painting",
+    price: 18,
+    original_price: 25,
+    rating: 4.8,
+    reviews_count: 670,
+    duration: "Per sq.ft",
+    image_url: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=800&auto=format&fit=crop",
+    description: "Professional wall painting with premium paints and expert finish.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Surface preparation", "Primer application", "2-coat paint", "Clean finish", "Color consultation"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "pest-control-home",
+    name: "General Pest Control",
+    category: "pest-control",
+    price: 999,
+    original_price: 1499,
+    rating: 4.7,
+    reviews_count: 890,
+    duration: "1-2 hours",
+    image_url: "https://images.unsplash.com/photo-1632935190508-f5b7c3f5c2e6?q=80&w=800&auto=format&fit=crop",
+    description: "Complete pest control for cockroaches, ants, and common pests with safe chemicals.",
+    is_active: true,
+    is_hidden: false,
+    includes: ["Full home treatment", "Kitchen focus", "Safe chemicals", "3-month protection", "Free follow-up"],
+    available_locations: [],
+    created_at: "",
+    updated_at: "",
+  },
+];
+
+// Default service for unknown IDs
 const defaultService = {
   id: "default",
-  name: "Service",
+  name: "Service Not Found",
   category: "General",
   price: 299,
   original_price: 499,
@@ -38,8 +186,8 @@ const defaultService = {
   reviews_count: 100,
   duration: "30-60 min",
   image_url: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
-  description: "Professional home service by verified technicians.",
-  includes: ["Service visit", "Issue diagnosis", "Basic repair", "30-day warranty"],
+  description: "The requested service could not be found. Please browse our available services.",
+  includes: [],
   available_locations: [],
   is_active: true,
   is_hidden: false,
@@ -62,6 +210,15 @@ const ServiceDetail = () => {
   const fetchService = async (serviceId: string) => {
     setLoading(true);
     
+    // First check fallback services (for static IDs like "ac-service")
+    const fallbackService = fallbackServices.find(s => s.id === serviceId);
+    if (fallbackService) {
+      setService(fallbackService);
+      setLoading(false);
+      return;
+    }
+    
+    // Then try database query (for UUID-based IDs)
     const { data, error } = await supabase
       .from("services")
       .select("*")
@@ -69,8 +226,7 @@ const ServiceDetail = () => {
       .maybeSingle();
 
     if (error || !data) {
-      // Fallback to default service
-      setService({ ...defaultService, name: "Service Not Found" });
+      setService(defaultService);
     } else {
       setService(data);
     }
