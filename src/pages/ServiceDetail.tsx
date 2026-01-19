@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { TrustBanner } from "@/components/common/VerifiedBadge";
 import { RazorpayButton, PricingBreakdown } from "@/components/payment/RazorpayButton";
+import { BookingForm } from "@/components/booking/BookingForm";
 import { 
   Star, 
   Clock, 
@@ -20,7 +21,8 @@ import {
   Loader2,
   ShieldCheck,
   CreditCard,
-  Lock
+  Lock,
+  X
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
@@ -200,6 +202,7 @@ const ServiceDetail = () => {
   const [service, setService] = useState<Service | typeof defaultService>(defaultService);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -238,9 +241,11 @@ const ServiceDetail = () => {
   };
 
   const handleBookNow = () => {
-    toast.success("Redirecting to booking...", {
-      description: "Choose your preferred date and time."
-    });
+    setShowBookingForm(true);
+  };
+
+  const handleBookingSuccess = () => {
+    setShowBookingForm(false);
   };
 
   if (loading) {
@@ -446,6 +451,47 @@ const ServiceDetail = () => {
             </div>
           </div>
         </div>
+
+        {/* Booking Form Modal */}
+        {showBookingForm && (
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-card rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-border shadow-xl">
+              <div className="sticky top-0 bg-card border-b border-border p-4 flex items-center justify-between rounded-t-2xl">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Book {service.name}</h2>
+                  <p className="text-sm text-muted-foreground">Fill in your details to confirm booking</p>
+                </div>
+                <button
+                  onClick={() => setShowBookingForm(false)}
+                  className="h-10 w-10 rounded-full hover:bg-secondary flex items-center justify-center transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="p-6">
+                <div className="bg-secondary/50 rounded-xl p-4 mb-6">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Service</p>
+                      <p className="font-medium text-foreground">{service.name} × {quantity}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-muted-foreground">Total Amount</p>
+                      <p className="text-xl font-bold text-primary">₹{Number(service.price) * quantity}</p>
+                    </div>
+                  </div>
+                </div>
+                <BookingForm
+                  serviceName={service.name}
+                  serviceCategory={service.category}
+                  amount={Number(service.price)}
+                  quantity={quantity}
+                  onSuccess={handleBookingSuccess}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
