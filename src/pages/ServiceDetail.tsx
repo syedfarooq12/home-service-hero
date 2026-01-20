@@ -212,20 +212,32 @@ const ServiceDetail = () => {
 
   const fetchService = async (serviceId: string) => {
     setLoading(true);
-    
+
+    // Allow multiple UI sections to link with "legacy" IDs while still resolving
+    // to the same canonical fallback service.
+    const serviceIdAliases: Record<string, string> = {
+      plumbing: "plumbing-repair",
+      carpenter: "carpentry-work",
+      painting: "wall-painting",
+      "pest-control": "pest-control-home",
+      "appliance-repair": "washing-machine",
+    };
+
+    const canonicalId = serviceIdAliases[serviceId] ?? serviceId;
+
     // First check fallback services (for static IDs like "ac-service")
-    const fallbackService = fallbackServices.find(s => s.id === serviceId);
+    const fallbackService = fallbackServices.find((s) => s.id === canonicalId);
     if (fallbackService) {
       setService(fallbackService);
       setLoading(false);
       return;
     }
-    
+
     // Then try database query (for UUID-based IDs)
     const { data, error } = await supabase
       .from("services")
       .select("*")
-      .eq("id", serviceId)
+      .eq("id", canonicalId)
       .maybeSingle();
 
     if (error || !data) {
