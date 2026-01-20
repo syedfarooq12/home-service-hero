@@ -1,11 +1,59 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, User, Calendar } from "lucide-react";
+import { Menu, X, Phone, User, Calendar, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    // Then check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Logout failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Logged out",
+        description: "You have been logged out successfully.",
+      });
+      navigate("/");
+    }
+  };
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -54,12 +102,41 @@ const Navbar = () => {
               Partner with us
             </Button>
           </Link>
-          <Link to="/login">
-            <Button size="sm">
+          {loading ? (
+            <Button size="sm" disabled>
               <User className="h-4 w-4" />
-              Login
+              Loading...
             </Button>
-          </Link>
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="outline">
+                  <User className="h-4 w-4" />
+                  {user.email?.split('@')[0] || 'Account'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/my-bookings" className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    My Bookings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/login">
+              <Button size="sm">
+                <User className="h-4 w-4" />
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -93,12 +170,34 @@ const Navbar = () => {
                   Partner with us
                 </Button>
               </Link>
-              <Link to="/login" onClick={() => setIsOpen(false)}>
-                <Button className="w-full">
-                  <User className="h-4 w-4" />
-                  Login
-                </Button>
-              </Link>
+              {user ? (
+                <>
+                  <Link to="/my-bookings" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      <Calendar className="h-4 w-4" />
+                      My Bookings
+                    </Button>
+                  </Link>
+                  <Button 
+                    className="w-full" 
+                    variant="destructive"
+                    onClick={() => {
+                      handleLogout();
+                      setIsOpen(false);
+                    }}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Link to="/login" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full">
+                    <User className="h-4 w-4" />
+                    Login
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
