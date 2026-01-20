@@ -40,7 +40,7 @@ const featuredServices = [
     badge: null,
   },
   {
-    id: "plumbing",
+    id: "plumbing-repair",
     name: "Plumbing Repair Visit",
     category: "Plumbing",
     price: 349,
@@ -52,7 +52,7 @@ const featuredServices = [
     badge: null,
   },
   {
-    id: "carpenter",
+    id: "carpentry-work",
     name: "Furniture Assembly & Repair",
     category: "Carpentry",
     price: 399,
@@ -64,7 +64,7 @@ const featuredServices = [
     badge: "New",
   },
   {
-    id: "painting",
+    id: "wall-painting",
     name: "Home Painting Service",
     category: "Painting",
     price: 2499,
@@ -76,7 +76,7 @@ const featuredServices = [
     badge: "Best Deal",
   },
   {
-    id: "pest-control",
+    id: "pest-control-home",
     name: "Pest Control Treatment",
     category: "Pest Control",
     price: 799,
@@ -88,7 +88,7 @@ const featuredServices = [
     badge: null,
   },
   {
-    id: "appliance-repair",
+    id: "washing-machine",
     name: "Appliance Repair Service",
     category: "Appliances",
     price: 449,
