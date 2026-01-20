@@ -648,7 +648,7 @@ export const ServiceManagement = () => {
               </div>
 
               <div>
-                <Label htmlFor="price">Price (₹) *</Label>
+                <Label htmlFor="price">Offer Price (₹) *</Label>
                 <Input
                   id="price"
                   type="number"
@@ -658,10 +658,11 @@ export const ServiceManagement = () => {
                   }
                   placeholder="499"
                 />
+                <p className="text-xs text-muted-foreground mt-1">Current selling price shown to customers</p>
               </div>
 
               <div>
-                <Label htmlFor="original_price">Original Price (₹)</Label>
+                <Label htmlFor="original_price">Original/MRP Price (₹)</Label>
                 <Input
                   id="original_price"
                   type="number"
@@ -674,6 +675,7 @@ export const ServiceManagement = () => {
                   }
                   placeholder="799"
                 />
+                <p className="text-xs text-muted-foreground mt-1">Original price (crossed out to show discount)</p>
               </div>
 
               <div className="col-span-2">
