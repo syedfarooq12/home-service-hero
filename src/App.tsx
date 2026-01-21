@@ -17,8 +17,10 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import MyBookings from "./pages/MyBookings";
 import AITasks from "./pages/AITasks";
+import BundleCheckout from "./pages/BundleCheckout";
 import NotFound from "./pages/NotFound";
 import SupportWidget from "./components/support/SupportWidget";
+import ServiceBundleCart from "./components/bundling/ServiceBundleCart";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/services/:category" element={<Services />} />
           <Route path="/service/:id" element={<ServiceDetail />} />
+          <Route path="/bundle-checkout" element={<BundleCheckout />} />
           <Route path="/technician-dashboard" element={<TechnicianDashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -48,6 +51,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <SupportWidget />
+        <ServiceBundleCart />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
