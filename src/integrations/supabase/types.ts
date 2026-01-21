@@ -151,6 +151,54 @@ export type Database = {
           },
         ]
       }
+      bundle_items: {
+        Row: {
+          bundle_id: string
+          created_at: string
+          description: string | null
+          id: string
+          price: number
+          service_category: string
+          service_id: string | null
+          service_name: string
+        }
+        Insert: {
+          bundle_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          price: number
+          service_category: string
+          service_id?: string | null
+          service_name: string
+        }
+        Update: {
+          bundle_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          price?: number
+          service_category?: string
+          service_id?: string | null
+          service_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bundle_items_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "service_bundles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bundle_items_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       favorite_technicians: {
         Row: {
           created_at: string
@@ -173,6 +221,83 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "favorite_technicians_technician_id_fkey"
+            columns: ["technician_id"]
+            isOneToOne: false
+            referencedRelation: "technician_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_bundles: {
+        Row: {
+          address: string | null
+          bundle_name: string | null
+          city: string | null
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          discount_percentage: number | null
+          id: string
+          notes: string | null
+          pincode: string | null
+          scheduled_date: string | null
+          scheduled_time: string | null
+          state: string | null
+          status: string
+          technician_id: string | null
+          total_discounted_price: number | null
+          total_original_price: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          bundle_name?: string | null
+          city?: string | null
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount_percentage?: number | null
+          id?: string
+          notes?: string | null
+          pincode?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          state?: string | null
+          status?: string
+          technician_id?: string | null
+          total_discounted_price?: number | null
+          total_original_price?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          bundle_name?: string | null
+          city?: string | null
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount_percentage?: number | null
+          id?: string
+          notes?: string | null
+          pincode?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          state?: string | null
+          status?: string
+          technician_id?: string | null
+          total_discounted_price?: number | null
+          total_original_price?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_bundles_technician_id_fkey"
             columns: ["technician_id"]
             isOneToOne: false
             referencedRelation: "technician_profiles"

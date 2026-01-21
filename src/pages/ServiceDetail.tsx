@@ -22,7 +22,8 @@ import {
   ShieldCheck,
   CreditCard,
   Lock,
-  X
+  X,
+  Package
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
@@ -425,10 +426,35 @@ const ServiceDetail = () => {
                 />
 
                 {/* Book Now Button */}
-                <div className="mt-6">
-                  <Button onClick={handleBookNow} variant="hero" size="xl" className="w-full mb-4">
+                <div className="mt-6 space-y-3">
+                  <Button onClick={handleBookNow} variant="hero" size="xl" className="w-full">
                     <Calendar className="h-5 w-5" />
                     Book Now
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full"
+                    onClick={() => {
+                      const bundle = JSON.parse(localStorage.getItem("serviceBundle") || "[]");
+                      const exists = bundle.some((item: any) => item.id === service.id);
+                      if (exists) {
+                        toast.info("Already in bundle", { description: "This service is already in your bundle." });
+                        return;
+                      }
+                      bundle.push({
+                        id: service.id,
+                        name: service.name,
+                        category: service.category,
+                        price: Number(service.price),
+                      });
+                      localStorage.setItem("serviceBundle", JSON.stringify(bundle));
+                      window.dispatchEvent(new Event("bundleUpdated"));
+                      toast.success("Added to bundle!", { description: "Add more services to get 10% discount." });
+                    }}
+                  >
+                    <Package className="h-5 w-5" />
+                    Add to Bundle
                   </Button>
                 </div>
 
