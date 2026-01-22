@@ -467,6 +467,8 @@ export type Database = {
           certifications: string[] | null
           city: string
           created_at: string
+          face_match_score: number | null
+          face_match_verified: boolean | null
           full_name: string
           id: string
           id_document_type: string | null
@@ -478,6 +480,7 @@ export type Database = {
           longitude: number | null
           phone: string
           pincode: string
+          selfie_url: string | null
           service_radius_km: number | null
           skills: string[] | null
           state: string
@@ -494,6 +497,8 @@ export type Database = {
           certifications?: string[] | null
           city: string
           created_at?: string
+          face_match_score?: number | null
+          face_match_verified?: boolean | null
           full_name: string
           id?: string
           id_document_type?: string | null
@@ -505,6 +510,7 @@ export type Database = {
           longitude?: number | null
           phone: string
           pincode: string
+          selfie_url?: string | null
           service_radius_km?: number | null
           skills?: string[] | null
           state: string
@@ -521,6 +527,8 @@ export type Database = {
           certifications?: string[] | null
           city?: string
           created_at?: string
+          face_match_score?: number | null
+          face_match_verified?: boolean | null
           full_name?: string
           id?: string
           id_document_type?: string | null
@@ -532,6 +540,7 @@ export type Database = {
           longitude?: number | null
           phone?: string
           pincode?: string
+          selfie_url?: string | null
           service_radius_km?: number | null
           skills?: string[] | null
           state?: string
