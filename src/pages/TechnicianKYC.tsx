@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Upload, CheckCircle, AlertCircle, ArrowRight, User, MapPin, Briefcase, CreditCard } from "lucide-react";
+import SelfieCapture from "@/components/kyc/SelfieCapture";
+import { Upload, CheckCircle, AlertCircle, ArrowRight, User, MapPin, Briefcase, CreditCard, ShieldCheck } from "lucide-react";
 import { z } from "zod";
 
 const kycSchema = z.object({
@@ -54,6 +55,9 @@ const TechnicianKYC = () => {
     pincode: "",
     idDocumentType: "",
     idDocumentUrl: "",
+    selfieUrl: "",
+    faceMatchVerified: false,
+    faceMatchScore: 0,
     skills: [] as string[],
     certifications: [] as string[],
     yearsOfExperience: 0,
@@ -103,6 +107,9 @@ const TechnicianKYC = () => {
           pincode: profile.pincode || "",
           idDocumentType: profile.id_document_type || "",
           idDocumentUrl: profile.id_document_url || "",
+          selfieUrl: profile.selfie_url || "",
+          faceMatchVerified: profile.face_match_verified || false,
+          faceMatchScore: profile.face_match_score || 0,
           skills: profile.skills || [],
           certifications: profile.certifications || [],
           yearsOfExperience: profile.years_of_experience || 0,
@@ -224,6 +231,15 @@ const TechnicianKYC = () => {
       return;
     }
 
+    if (!formData.faceMatchVerified) {
+      toast({
+        title: "Face Verification Required",
+        description: "Please complete face verification with your selfie.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const profileData = {
@@ -236,6 +252,9 @@ const TechnicianKYC = () => {
         pincode: formData.pincode,
         id_document_type: formData.idDocumentType,
         id_document_url: formData.idDocumentUrl,
+        selfie_url: formData.selfieUrl,
+        face_match_verified: formData.faceMatchVerified,
+        face_match_score: formData.faceMatchScore,
         skills: formData.skills,
         certifications: formData.certifications,
         years_of_experience: formData.yearsOfExperience,
@@ -390,6 +409,38 @@ const TechnicianKYC = () => {
             )}
           </label>
         </div>
+      </div>
+
+      {/* Face Verification Section */}
+      <div className="mt-6 pt-6 border-t border-border">
+        <div className="flex items-center gap-2 mb-4">
+          <ShieldCheck className="w-5 h-5 text-accent" />
+          <h3 className="font-semibold">AI Face Verification</h3>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          To verify your identity, we'll compare your selfie with the photo on your ID document using AI.
+        </p>
+        {userId && (
+          <SelfieCapture
+            userId={userId}
+            idDocumentUrl={formData.idDocumentUrl}
+            disabled={!formData.idDocumentUrl}
+            onVerificationComplete={(result) => {
+              setFormData(prev => ({
+                ...prev,
+                selfieUrl: result.selfieUrl,
+                faceMatchVerified: result.verified,
+                faceMatchScore: result.confidence,
+              }));
+            }}
+          />
+        )}
+        {formData.faceMatchVerified && (
+          <div className="mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-green-500" />
+            <span className="text-sm font-medium text-green-600">Face verified with {formData.faceMatchScore}% confidence</span>
+          </div>
+        )}
       </div>
     </div>
   );
