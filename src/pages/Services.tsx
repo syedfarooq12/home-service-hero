@@ -203,12 +203,17 @@ const Services = () => {
       .eq("is_hidden", false)
       .order("created_at", { ascending: false });
 
-    if (error || !data || data.length === 0) {
-      // Use fallback services if DB is empty or error
-      setServices(fallbackServices);
-    } else {
-      setServices(data);
-    }
+    // Merge DB services with fallback services (DB services take priority)
+    const dbServices = data || [];
+    const dbServiceIds = new Set(dbServices.map(s => s.id));
+    
+    // Add fallback services that aren't already in DB
+    const mergedServices = [
+      ...dbServices,
+      ...fallbackServices.filter(fs => !dbServiceIds.has(fs.id))
+    ];
+    
+    setServices(mergedServices);
     setLoading(false);
   };
 
