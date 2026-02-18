@@ -56,6 +56,42 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_messages: {
+        Row: {
+          booking_id: string
+          content: string
+          content_encrypted: boolean
+          created_at: string
+          id: string
+          is_read: boolean
+          message_type: string
+          sender_id: string
+          sender_role: string
+        }
+        Insert: {
+          booking_id: string
+          content: string
+          content_encrypted?: boolean
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message_type?: string
+          sender_id: string
+          sender_role: string
+        }
+        Update: {
+          booking_id?: string
+          content?: string
+          content_encrypted?: boolean
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message_type?: string
+          sender_id?: string
+          sender_role?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           address: string
@@ -198,6 +234,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      call_sessions: {
+        Row: {
+          answer: Json | null
+          booking_id: string
+          callee_id: string
+          caller_id: string
+          created_at: string
+          ended_at: string | null
+          ice_candidates: Json | null
+          id: string
+          offer: Json | null
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          answer?: Json | null
+          booking_id: string
+          callee_id: string
+          caller_id: string
+          created_at?: string
+          ended_at?: string | null
+          ice_candidates?: Json | null
+          id?: string
+          offer?: Json | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: Json | null
+          booking_id?: string
+          callee_id?: string
+          caller_id?: string
+          created_at?: string
+          ended_at?: string | null
+          ice_candidates?: Json | null
+          id?: string
+          offer?: Json | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       favorite_technicians: {
         Row: {
