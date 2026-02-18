@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { TechnicianTracker } from "@/components/tracking/TechnicianTracker";
+import CommunicationPanel from "@/components/communication/CommunicationPanel";
 import {
   Calendar,
   Clock,
@@ -40,6 +41,7 @@ interface Booking {
   payment_status: string | null;
   customer_name: string;
   customer_phone: string;
+  technician_id: string | null;
   technician_location_lat: number | null;
   technician_location_lng: number | null;
   estimated_arrival_time: string | null;
@@ -294,15 +296,13 @@ const MyBookings = () => {
 
                     {/* Actions */}
                     <div className="flex flex-wrap gap-3 pt-4 border-t border-border">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openWhatsApp("9876543210", booking.service_name)}
-                        className="gap-2"
-                      >
-                        <MessageCircle className="h-4 w-4" />
-                        Contact Support
-                      </Button>
+                      <CommunicationPanel
+                        bookingId={booking.id}
+                        userId={user?.id}
+                        userRole="customer"
+                        otherPartyName="Technician"
+                        otherPartyId={booking.technician_id || undefined}
+                      />
 
                       {isActive && booking.status !== "in_progress" && (
                         <Button
