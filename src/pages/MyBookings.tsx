@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { TechnicianTracker } from "@/components/tracking/TechnicianTracker";
 import CommunicationPanel from "@/components/communication/CommunicationPanel";
+import WhatsAppShare from "@/components/shared/WhatsAppShare";
 import {
   Calendar,
   Clock,
@@ -302,6 +303,14 @@ const MyBookings = () => {
                         userRole="customer"
                         otherPartyName="Technician"
                         otherPartyId={booking.technician_id || undefined}
+                      />
+
+                      <WhatsAppShare
+                        serviceName={booking.service_name}
+                        status={statusConfig[booking.status]?.label || booking.status}
+                        scheduledDate={booking.scheduled_date}
+                        scheduledTime={booking.scheduled_time}
+                        bookingId={booking.id}
                       />
 
                       {isActive && booking.status !== "in_progress" && (

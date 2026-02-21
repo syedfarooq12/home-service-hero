@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import MyBookings from "./pages/MyBookings";
 import AITasks from "./pages/AITasks";
 import BundleCheckout from "./pages/BundleCheckout";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 import SupportWidget from "./components/support/SupportWidget";
 import ServiceBundleCart from "./components/bundling/ServiceBundleCart";
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/ai-tasks" element={<AITasks />} />
+          <Route path="/install" element={<Install />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
