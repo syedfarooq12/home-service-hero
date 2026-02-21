@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import QuickActions from "@/components/tasks/QuickActions";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -75,6 +76,10 @@ interface TaskPostingWizardProps {
 }
 
 export default function TaskPostingWizard({ onComplete }: TaskPostingWizardProps) {
+  const handleQuickAction = useCallback((title: string, description: string, category: string) => {
+    setTextInput(title + (description ? ` — ${description}` : ""));
+    setInputMode("text");
+  }, []);
   const [step, setStep] = useState<Step>("input");
   const [inputMode, setInputMode] = useState<InputMode>("text");
   const [textInput, setTextInput] = useState("");
@@ -290,6 +295,9 @@ export default function TaskPostingWizard({ onComplete }: TaskPostingWizardProps
                 </p>
               </div>
             </div>
+
+            {/* Quick Actions - auto-fill from history */}
+            <QuickActions onSelect={handleQuickAction} />
 
             {/* Mode switcher */}
             <div className="flex gap-2">
