@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, User, Calendar, LogOut } from "lucide-react";
+import { Menu, X, Phone, User, Calendar, LogOut, Shield, Wrench } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,23 +17,36 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [userRoles, setUserRoles] = useState<string[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const fetchRoles = async (userId: string) => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    setUserRoles(data?.map((r) => r.role) ?? []);
+  };
+
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user ?? null);
         setLoading(false);
+        if (session?.user) {
+          setTimeout(() => fetchRoles(session.user.id), 0);
+        } else {
+          setUserRoles([]);
+        }
       }
     );
 
-    // Then check current session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user) fetchRoles(session.user.id);
     });
 
     return () => subscription.unsubscribe();
@@ -110,12 +124,38 @@ const Navbar = () => {
           ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="outline">
+                <Button size="sm" variant="outline" className="gap-2">
                   <User className="h-4 w-4" />
                   {user.email?.split('@')[0] || 'Account'}
+                  {userRoles.includes('admin') && (
+                    <Badge className="ml-1 bg-destructive/90 text-destructive-foreground text-[10px] px-1.5 py-0">Admin</Badge>
+                  )}
+                  {userRoles.includes('technician') && !userRoles.includes('admin') && (
+                    <Badge className="ml-1 bg-accent text-accent-foreground text-[10px] px-1.5 py-0">Helper</Badge>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-52">
+                <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                  {userRoles.includes('admin') ? '🛡️ Admin Account' : userRoles.includes('technician') ? '🔧 Helper Account' : '👤 Customer Account'}
+                </div>
+                <DropdownMenuSeparator />
+                {userRoles.includes('admin') && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin/dashboard" className="flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      Admin Panel
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                {userRoles.includes('technician') && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/technician-dashboard" className="flex items-center gap-2">
+                      <Wrench className="h-4 w-4" />
+                      Helper Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem asChild>
                   <Link to="/my-bookings" className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
@@ -172,6 +212,25 @@ const Navbar = () => {
               </Link>
               {user ? (
                 <>
+                  <div className="text-xs text-muted-foreground px-1 pb-1">
+                    {userRoles.includes('admin') ? '🛡️ Admin Account' : userRoles.includes('technician') ? '🔧 Helper Account' : '👤 Customer Account'}
+                  </div>
+                  {userRoles.includes('admin') && (
+                    <Link to="/admin/dashboard" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full">
+                        <Shield className="h-4 w-4" />
+                        Admin Panel
+                      </Button>
+                    </Link>
+                  )}
+                  {userRoles.includes('technician') && (
+                    <Link to="/technician-dashboard" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full">
+                        <Wrench className="h-4 w-4" />
+                        Helper Dashboard
+                      </Button>
+                    </Link>
+                  )}
                   <Link to="/my-bookings" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full">
                       <Calendar className="h-4 w-4" />
