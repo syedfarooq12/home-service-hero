@@ -11,6 +11,10 @@ import {
   Bell,
   ArrowRight,
   CheckCircle2,
+  Users,
+  Building2,
+  Megaphone,
+  Star,
 } from "lucide-react";
 
 const benefits = [
@@ -172,6 +176,78 @@ const BecomeHelper = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Business Partnerships */}
+        <section className="py-16 md:py-24">
+          <div className="container">
+            <div className="text-center mb-12">
+              <span className="inline-block mb-3 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+                For Businesses
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Partner with HelpR
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+                Powerful integrations for organizations looking to offer reliable services at scale.
+              </p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
+              {[
+                {
+                  icon: Users,
+                  title: "Employee Perks",
+                  description:
+                    "Offer HelpR benefits to your employees for daily home help — cleaning, repairs, wellness & more.",
+                },
+                {
+                  icon: Building2,
+                  title: "Org & Event Integration",
+                  description:
+                    "Integrate HelpR services into your organization's workflow or corporate events seamlessly.",
+                },
+                {
+                  icon: Megaphone,
+                  title: "Marketplace Promotions",
+                  description:
+                    "Promote your local business inside the HelpR marketplace and reach thousands of active users.",
+                },
+                {
+                  icon: Star,
+                  title: "Verified Ratings & Reviews",
+                  description:
+                    "Build trust with transparent, verified ratings from real customers — boosting credibility and conversions.",
+                },
+              ].map((item) => (
+                <Card
+                  key={item.title}
+                  className="group border-border/50 hover:border-primary/30 transition-colors"
+                >
+                  <CardContent className="p-6 flex flex-col gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <item.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mt-10">
+              <Link to="/contact">
+                <Button size="lg" variant="outline" className="text-base px-8">
+                  Get in Touch
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
