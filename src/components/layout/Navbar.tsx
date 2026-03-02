@@ -97,7 +97,7 @@ const Navbar = () => {
             <Phone className="h-4 w-4" />
             <span>+91 98765 43210</span>
           </a>
-          <Link to="/technician/login">
+          <Link to="/become-helper">
             <Button variant="outline" size="sm">
               Partner with us
             </Button>
@@ -165,7 +165,7 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="pt-4 border-t border-border space-y-3">
-              <Link to="/technician/login" onClick={() => setIsOpen(false)}>
+              <Link to="/become-helper" onClick={() => setIsOpen(false)}>
                 <Button variant="outline" className="w-full">
                   Partner with us
                 </Button>
