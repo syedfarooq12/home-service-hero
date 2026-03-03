@@ -171,7 +171,7 @@ const Login = () => {
     try {
       if (isSignUp) {
         const redirectUrl = `${window.location.origin}/`;
-        const { error } = await supabase.auth.signUp({
+        const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -184,6 +184,13 @@ const Login = () => {
             throw new Error("This email is already registered. Please sign in instead.");
           }
           throw error;
+        }
+
+        // Assign customer role
+        if (signUpData.user) {
+          await supabase
+            .from("user_roles")
+            .insert({ user_id: signUpData.user.id, role: "customer" as const });
         }
 
         toast({
