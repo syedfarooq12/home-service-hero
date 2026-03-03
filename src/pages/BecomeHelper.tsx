@@ -15,6 +15,10 @@ import {
   Building2,
   Megaphone,
   Star,
+  BadgeCheck,
+  GraduationCap,
+  Gift,
+  Heart,
 } from "lucide-react";
 
 const benefits = [
@@ -248,6 +252,75 @@ const BecomeHelper = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust & Quality */}
+        <section className="py-16 md:py-24 bg-muted/40">
+          <div className="container">
+            <div className="text-center mb-12">
+              <span className="inline-block mb-3 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+                Trust & Quality
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Built on Trust, Driven by Quality
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+                Every feature is designed to reward great work and build lasting confidence.
+              </p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+              {[
+                {
+                  icon: CheckCircle2,
+                  title: "Verified Reviews",
+                  description:
+                    "Only real, verified reviews from completed tasks — no fake ratings, just honest feedback from actual customers.",
+                },
+                {
+                  icon: BadgeCheck,
+                  title: "Helper Badges",
+                  description:
+                    "Earn skill, speed, and reliability badges based on your performance. Stand out and get more bookings.",
+                },
+                {
+                  icon: GraduationCap,
+                  title: "Training & Certification",
+                  description:
+                    "Free training modules and certifications to level up your skills and deliver better-quality service.",
+                },
+                {
+                  icon: Gift,
+                  title: "Loyalty Rewards",
+                  description:
+                    "Regular users earn loyalty points on every booking — redeem them for discounts, perks, and exclusive offers.",
+                },
+                {
+                  icon: Heart,
+                  title: "Social Impact Mode",
+                  description:
+                    "Join community help drives and volunteer tasks. Make a difference while building your reputation.",
+                },
+              ].map((item) => (
+                <Card
+                  key={item.title}
+                  className="group border-border/50 hover:border-primary/30 transition-colors"
+                >
+                  <CardContent className="p-6 flex flex-col gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <item.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
