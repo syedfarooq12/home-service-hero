@@ -27,7 +27,15 @@ const Navbar = () => {
       .from("user_roles")
       .select("role")
       .eq("user_id", userId);
-    setUserRoles(data?.map((r) => r.role) ?? []);
+    const roles = data?.map((r) => r.role) ?? [];
+    // Auto-assign customer role if user has no roles
+    if (roles.length === 0) {
+      await supabase
+        .from("user_roles")
+        .insert({ user_id: userId, role: "customer" as const });
+      roles.push("customer");
+    }
+    setUserRoles(roles);
   };
 
   useEffect(() => {
@@ -127,11 +135,12 @@ const Navbar = () => {
                 <Button size="sm" variant="outline" className="gap-2">
                   <User className="h-4 w-4" />
                   {user.email?.split('@')[0] || 'Account'}
-                  {userRoles.includes('admin') && (
+                  {userRoles.includes('admin') ? (
                     <Badge className="ml-1 bg-destructive/90 text-destructive-foreground text-[10px] px-1.5 py-0">Admin</Badge>
-                  )}
-                  {userRoles.includes('technician') && !userRoles.includes('admin') && (
+                  ) : userRoles.includes('technician') ? (
                     <Badge className="ml-1 bg-accent text-accent-foreground text-[10px] px-1.5 py-0">Helper</Badge>
+                  ) : (
+                    <Badge variant="secondary" className="ml-1 text-[10px] px-1.5 py-0">Customer</Badge>
                   )}
                 </Button>
               </DropdownMenuTrigger>
