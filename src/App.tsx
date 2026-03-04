@@ -23,6 +23,7 @@ import BecomeHelper from "./pages/BecomeHelper";
 import NotFound from "./pages/NotFound";
 import SupportWidget from "./components/support/SupportWidget";
 import ServiceBundleCart from "./components/bundling/ServiceBundleCart";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
         </Routes>
         <SupportWidget />
         <ServiceBundleCart />
+        <ScrollToTop />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
