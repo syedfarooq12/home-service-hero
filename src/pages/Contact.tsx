@@ -47,19 +47,19 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Phone",
-      details: ["+91 98765 43210", "+91 98765 43211"],
+      details: ["+91 89193 12594"],
       description: "Mon-Sun, 8am - 10pm IST",
     },
     {
       icon: Mail,
       title: "Email",
-      details: ["support@helpr.in", "business@helpr.in"],
+      details: ["infinitysolpvtltd24@gmail.com"],
       description: "We reply within 24 hours",
     },
     {
       icon: MapPin,
       title: "Office",
-      details: ["123 Tech Park, Sector 62", "Noida, UP 201301"],
+      details: ["Giddalur, Markapuram Dist", "Andhra Pradesh 523357"],
       description: "Visit us Mon-Fri, 10am - 6pm",
     },
     {
@@ -83,7 +83,7 @@ const Contact = () => {
       title: "Call Us",
       description: "Speak directly with our customer support executives.",
       action: "Call Now",
-      href: "tel:+919876543210",
+      href: "tel:+918919312594",
     },
     {
       icon: Building,
@@ -94,7 +94,7 @@ const Contact = () => {
     },
   ];
 
-  const whatsappNumber = "919876543210";
+  const whatsappNumber = "918919312594";
   const whatsappMessage = encodeURIComponent("Hi, I need help with a home service");
 
   return (
@@ -307,7 +307,7 @@ const Contact = () => {
               <div className="text-center">
                 <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">Interactive map coming soon</p>
-                <p className="text-sm text-muted-foreground">123 Tech Park, Sector 62, Noida, UP 201301</p>
+                <p className="text-sm text-muted-foreground">Giddalur, Markapuram Dist, Andhra Pradesh 523357</p>
               </div>
             </div>
           </div>

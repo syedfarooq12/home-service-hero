@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Phone, Mail, MapPin, Twitter, Instagram, Linkedin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -45,17 +45,17 @@ const Footer = () => {
               Your trusted partner for all home services. Book verified professionals for electrical, plumbing, cleaning, and more.
             </p>
             <div className="space-y-3">
-              <a href="tel:+919876543210" className="flex items-center gap-3 text-background/70 hover:text-background transition-colors">
+              <a href="tel:+918919312594" className="flex items-center gap-3 text-background/70 hover:text-background transition-colors">
                 <Phone className="h-5 w-5" />
-                <span>+91 98765 43210</span>
+                <span>+91 89193 12594</span>
               </a>
-              <a href="mailto:support@helpr.in" className="flex items-center gap-3 text-background/70 hover:text-background transition-colors">
+              <a href="mailto:infinitysolpvtltd24@gmail.com" className="flex items-center gap-3 text-background/70 hover:text-background transition-colors">
                 <Mail className="h-5 w-5" />
-                <span>support@helpr.in</span>
+                <span>infinitysolpvtltd24@gmail.com</span>
               </a>
               <div className="flex items-start gap-3 text-background/70">
                 <MapPin className="h-5 w-5 mt-0.5" />
-                <span>123 Business Hub, Sector 15,<br />Bengaluru, Karnataka 560001</span>
+                <span>Giddalur, Markapuram Dist,<br />Andhra Pradesh 523357</span>
               </div>
             </div>
           </div>
@@ -118,16 +118,13 @@ const Footer = () => {
             © {currentYear} Helpr. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
-              <Facebook className="h-5 w-5" />
-            </a>
-            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
-              <Twitter className="h-5 w-5" />
-            </a>
-            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+            <a href="https://www.instagram.com/syedfaru_1819" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
               <Instagram className="h-5 w-5" />
             </a>
-            <a href="#" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+            <a href="https://x.com/Faru_1206" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
+              <Twitter className="h-5 w-5" />
+            </a>
+            <a href="https://www.linkedin.com/in/syed-farooq-b6943a33b" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors">
               <Linkedin className="h-5 w-5" />
             </a>
           </div>
