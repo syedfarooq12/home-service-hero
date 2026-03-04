@@ -60,7 +60,7 @@ const About = () => {
               <span className="text-gradient">Simple & Reliable</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              HelpR was founded with a simple mission: to provide fast, reliable, and affordable home services to every household in India.
+              HelpR was founded by Infinity Solutions Pvt Ltd with a simple mission: to provide fast, reliable, and affordable home services to every household in India — starting from Giddalur, Andhra Pradesh.
             </p>
           </div>
         </div>
