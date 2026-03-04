@@ -53,7 +53,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      details: ["infinitysolpvtltd24@gmail.com"],
+      details: ["helprserv@gmail.com"],
       description: "We reply within 24 hours",
     },
     {
