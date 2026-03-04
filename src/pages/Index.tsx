@@ -12,6 +12,7 @@ import { AdsBanner } from "@/components/home/AdsBanner";
 import { HyperLocalBanner } from "@/components/matching/NearbyHelpers";
 import { QuickRebookSection } from "@/components/rebooking/QuickRebook";
 import PersonalizedSuggestions from "@/components/home/PersonalizedSuggestions";
+import CommunityImpactSection from "@/components/home/CommunityImpactSection";
 
 const Index = () => {
   return (
@@ -31,6 +32,7 @@ const Index = () => {
         <FeaturedServicesSection />
         <HowItWorksSection />
         <AITipsSection />
+        <CommunityImpactSection />
         <TestimonialsSection />
         <CTASection />
       </main>
