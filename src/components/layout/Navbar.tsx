@@ -115,9 +115,9 @@ const Navbar = () => {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
-          <a href="tel:+919876543210" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <a href="tel:+918919312594" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             <Phone className="h-4 w-4" />
-            <span>+91 98765 43210</span>
+            <span>+91 89193 12594</span>
           </a>
           <Link to="/become-helper">
             <Button variant="outline" size="sm">
