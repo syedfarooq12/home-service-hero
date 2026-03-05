@@ -75,7 +75,7 @@ const AITipsSection = () => {
           {tips.map((tip, idx) => (
             <div 
               key={idx}
-              className={`group relative bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${isLoading ? 'animate-pulse' : ''}`}
+              className={`group relative bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col ${isLoading ? 'animate-pulse' : ''}`}
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/5 to-transparent rounded-bl-full" />
               
@@ -84,7 +84,7 @@ const AITipsSection = () => {
               </div>
 
               <h3 className="text-lg font-semibold text-foreground mb-2">{tip.title}</h3>
-              <p className="text-muted-foreground text-sm mb-4">{tip.tip}</p>
+              <p className="text-muted-foreground text-sm mb-4 flex-1">{tip.tip}</p>
 
               <Link to={`/services/${tip.category}`}>
                 <Button variant="ghost" size="sm" className="group-hover:text-primary transition-colors">
