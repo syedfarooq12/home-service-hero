@@ -25,7 +25,7 @@ const CTASection = () => {
             <Link to="/services">
               <Button 
                 size="xl" 
-                className="bg-background text-primary hover:bg-background/90"
+                variant="secondary"
               >
                 Book a Service
                 <ArrowRight className="h-5 w-5" />
@@ -34,8 +34,7 @@ const CTASection = () => {
             <a href="tel:+918919312594">
               <Button 
                 size="xl" 
-                variant="outline" 
-                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                variant="outline"
               >
                 <Phone className="h-5 w-5" />
                 Call Us Now
