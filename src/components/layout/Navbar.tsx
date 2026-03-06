@@ -92,8 +92,8 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-1">
-          <img src={helprLogo} alt="HelpR Logo" className="h-12 w-auto" />
+        <Link to="/" className="flex items-center">
+          <img src={helprLogo} alt="HelpR Logo" className="h-14 w-auto -my-1" />
         </Link>
 
         {/* Desktop Navigation */}
