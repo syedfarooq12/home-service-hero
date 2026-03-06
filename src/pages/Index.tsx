@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/Navbar";
+import helprLogo from "@/assets/helpr-logo.png";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import CategoriesSection from "@/components/home/CategoriesSection";
@@ -16,7 +17,11 @@ import CommunityImpactSection from "@/components/home/CommunityImpactSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Background watermark logo */}
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
+        <img src={helprLogo} alt="" className="w-[600px] h-auto opacity-[0.03] logo-orange" />
+      </div>
       <Navbar />
       <main>
         <HeroSection />
