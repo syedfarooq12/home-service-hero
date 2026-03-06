@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Twitter, Instagram, Linkedin } from "lucide-react";
+import helprLogo from "@/assets/helpr-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
