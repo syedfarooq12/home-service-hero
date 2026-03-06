@@ -1,5 +1,5 @@
 import Navbar from "@/components/layout/Navbar";
-import helprLogo from "@/assets/helpr-logo-clean.png";
+import helprLogo from "@/assets/helpr-logo-orange.png";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import CategoriesSection from "@/components/home/CategoriesSection";
