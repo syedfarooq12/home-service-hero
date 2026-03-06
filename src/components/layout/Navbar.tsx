@@ -92,11 +92,8 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-hero">
-            <span className="text-lg font-bold text-primary-foreground">H</span>
-          </div>
-          <span className="text-xl font-bold text-foreground">HelpR</span>
+        <Link to="/" className="flex items-center gap-1">
+          <img src={helprLogo} alt="HelpR Logo" className="h-10 w-auto logo-orange" />
         </Link>
 
         {/* Desktop Navigation */}

@@ -112,6 +112,11 @@
   }
 }
 
+/* Orange-tinted logo filter */
+.logo-orange {
+  filter: sepia(1) saturate(3) hue-rotate(-15deg) brightness(0.95);
+}
+
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;

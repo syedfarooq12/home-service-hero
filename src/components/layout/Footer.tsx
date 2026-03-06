@@ -31,16 +31,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-foreground text-background">
-      <div className="container py-16">
+    <footer className="bg-foreground text-background relative overflow-hidden">
+      {/* Watermark Logo */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <img src={helprLogo} alt="" className="w-[500px] h-auto opacity-[0.04] logo-orange" />
+      </div>
+      <div className="container py-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-hero">
-                <span className="text-xl font-bold text-primary-foreground">H</span>
-              </div>
-              <span className="text-2xl font-bold">HelpR</span>
+            <Link to="/" className="flex items-center gap-1 mb-6">
+              <img src={helprLogo} alt="HelpR Logo" className="h-12 w-auto logo-orange brightness-200" />
             </Link>
             <p className="text-background/70 mb-6 max-w-sm">
               Your trusted partner for all home services. Book verified professionals for electrical, plumbing, cleaning, and more.
