@@ -1,5 +1,5 @@
 import Navbar from "@/components/layout/Navbar";
-import helprLogo from "@/assets/helpr-logo-clean.png";
+import helprLogo from "@/assets/helpr-logo-orange.png";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import CategoriesSection from "@/components/home/CategoriesSection";
@@ -20,7 +20,7 @@ const Index = () => {
     <div className="min-h-screen bg-background relative">
       {/* Background watermark logo */}
       <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
-        <img src={helprLogo} alt="" className="w-[700px] h-auto opacity-[0.04] logo-orange blur-[0.5px]" />
+        <img src={helprLogo} alt="" className="w-[700px] h-auto opacity-[0.04] blur-[0.5px]" />
       </div>
       <Navbar />
       <main>
