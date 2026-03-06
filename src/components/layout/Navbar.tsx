@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import helprLogo from "@/assets/helpr-logo.png";
+import helprLogo from "@/assets/helpr-logo-clean.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, User, Calendar, LogOut, Shield, Wrench } from "lucide-react";
