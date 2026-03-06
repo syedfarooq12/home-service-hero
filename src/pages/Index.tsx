@@ -20,7 +20,7 @@ const Index = () => {
     <div className="min-h-screen bg-background relative">
       {/* Background watermark logo */}
       <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
-        <img src={helprLogo} alt="" className="w-[600px] h-auto opacity-[0.03] logo-orange" />
+        <img src={helprLogo} alt="" className="w-[700px] h-auto opacity-[0.04] logo-orange blur-[0.5px]" />
       </div>
       <Navbar />
       <main>
