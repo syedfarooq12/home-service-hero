@@ -93,7 +93,7 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img src={helprLogo} alt="HelpR Logo" className="h-14 w-auto -my-1" />
+          <img src={helprLogo} alt="HelpR Logo" className="h-20 w-auto -my-3" />
         </Link>
 
         {/* Desktop Navigation */}
