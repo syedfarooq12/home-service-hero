@@ -41,7 +41,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center mb-6">
-              <img src={helprLogo} alt="HelpR Logo" className="h-16 w-auto brightness-200" />
+              <img src={helprLogo} alt="HelpR Logo" className="h-16 w-auto brightness-[10] invert" />
             </Link>
             <p className="text-background/70 mb-6 max-w-sm">
               Your trusted partner for all home services. Book verified professionals for electrical, plumbing, cleaning, and more.
