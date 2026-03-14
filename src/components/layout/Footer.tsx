@@ -35,7 +35,7 @@ const Footer = () => {
     <footer className="bg-foreground text-background relative overflow-hidden">
       {/* Watermark Logo */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <img src={helprLogo} alt="" className="w-[600px] h-auto opacity-[0.06] blur-[1px] brightness-[10] invert" />
+        <img src={helprLogoWhite} alt="" className="w-[700px] h-auto opacity-[0.08]" />
       </div>
       <div className="container py-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
