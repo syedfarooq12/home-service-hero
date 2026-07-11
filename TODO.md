@@ -1,0 +1,3 @@
+- [x] Update README.md to remove Lovable-specific content and reflect the actual home-service-hero project.
+- [x] Push README changes to origin/main.
+- [ ] Verify git status is clean (or expected changes only).
